@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yhl</groupId>
+    <artifactId>yhl-core</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>yhl-depedences</module>
+        <module>yhl-parent</module>
+    </modules>
+    <packaging>pom</packaging>
+
+
+   <!-- <distributionManagement>负责管理构件的发布-->
+    <distributionManagement>
+        <!--稳定版发布仓库地址-->
+        <repository>
+            <id>yhl-releases</id>
+            <name>releases</name>
+            <url>http://localhost:7322/nexus/content/repositories/releases/</url>
+        </repository>
+        <!--快照版仓库地址-->
+        <snapshotRepository>
+            <id>dmzl-snapshots</id>
+            <name>snapshots</name>
+            <url>http://localhost:7322/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
