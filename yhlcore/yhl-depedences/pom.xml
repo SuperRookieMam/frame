@@ -42,6 +42,8 @@
         <!-- plugs -->
         <maven.deploy.version>2.7</maven.deploy.version>
         <maven.source.version>2.4</maven.source.version>
+
+        <spring-data-jpa.version>1.5.1.RELEASE</spring-data-jpa.version>
     </properties>
 
 
@@ -53,6 +55,11 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${springboot.mybatis.version}</version>
+            </dependency>
+             <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data-jpa.version}</version>
             </dependency>
 
             <dependency>
