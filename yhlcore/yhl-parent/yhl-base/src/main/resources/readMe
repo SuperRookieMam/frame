@@ -1,1 +1,60 @@
-你问我为什么没有dao层，因为dao层有可能时mybaties，有可能时jpa 等可以单独取搞一个dao的模块
+
+#多数据源配置规则
+list：
+  li:
+   -mybatis=primary  #可以时5个其中一个
+   -jpa=second    #可以可以时5个其中一个
+    .
+    .
+    .
+dataSource：
+   primary：
+     driverClassName： #可以时jdbc的mysql redis oracle驱动
+     url：
+     username：
+     password：
+     .
+     .
+     .
+     .
+     .
+   second：
+        driverClassName： #可以时jdbc的mysql redis oracle驱动
+        url：
+        username：
+        password：
+        .
+        .
+        .
+        .
+        .
+   third：
+        driverClassName： #可以时jdbc的mysql redis oracle驱动
+        url：
+        username：
+        password：
+        .
+        .
+        .
+        .
+        .
+   four：
+        driverClassName： #可以时jdbc的mysql redis oracle驱动
+        url：
+        username：
+        password：
+        .
+        .
+        .
+        .
+        .
+   five：
+      driverClassName： #可以时jdbc的mysql redis oracle驱动
+      url：
+      username：
+      password：
+      .
+      .
+      .
+      .
+      .
