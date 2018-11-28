@@ -2,8 +2,8 @@
 #多数据源配置规则
 list：
   li:
-   -mybatis=primary  #可以时5个其中一个
-   -jpa=second    #可以可以时5个其中一个
+   -mybatis~primary  #可以时5个其中一个
+   -jpa~second    #可以可以时5个其中一个
     .
     .
     .
