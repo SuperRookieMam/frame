@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package demo.config;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
