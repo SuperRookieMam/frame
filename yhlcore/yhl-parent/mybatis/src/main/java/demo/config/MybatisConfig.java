@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
@@ -51,7 +52,9 @@ public class MybatisConfig implements TransactionManagementConfigurer {
      * 其返回值代表在拥有多个事务管理器的情况下默认使用的事务管理器
      * **/
     @Override
+
     public PlatformTransactionManager annotationDrivenTransactionManager() {
-        return null;
+
+        return  new DataSourceTransactionManager(getMysqlDatasource());
     }
 }
