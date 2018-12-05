@@ -1,10 +1,10 @@
-package demo.dao;
+package com.yhl.dao;
 
-import demo.constpackage.Params;
-
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
-public interface BaseDao<T> {
+public interface BaseDao<T extends Serializable> {
 
     /**
      * 根据id查询实体
@@ -16,12 +16,12 @@ public interface BaseDao<T> {
     /**
      * 根据条件查询实体
      * */
-    public <T> List<T> findByParams(Params params);
+    public <T> List<T> findByParams(Map<String,Object> map);
 
     /**
      * 查询条数
      * */
-    public long findeCountByParam(Params params);
+    public long findeCountByParam(Map<String,Object> map);
 
     /**
      * 根据sql查询

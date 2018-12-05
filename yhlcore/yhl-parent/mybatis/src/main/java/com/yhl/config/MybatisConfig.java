@@ -1,4 +1,4 @@
-package demo.config;
+package com.yhl.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
