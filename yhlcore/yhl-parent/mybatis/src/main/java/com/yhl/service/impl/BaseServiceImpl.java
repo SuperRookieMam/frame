@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseServiceImpl<T> implements BaseService<T> {
     @Autowired
-    private BaseDao<T> baseDao;
+    private BaseDao baseDao;
 
 
 }

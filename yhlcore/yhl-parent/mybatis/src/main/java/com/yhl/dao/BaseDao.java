@@ -8,10 +8,9 @@ public interface BaseDao<T extends Serializable> {
 
     /**
      * 根据id查询实体
-     * @param id
      * @return  T 实体
      * */
-    public <T> T findById(String id);
+    public <T> T findById(Map<String,Object> map);
 
     /**
      * 根据条件查询实体
@@ -36,12 +35,12 @@ public interface BaseDao<T extends Serializable> {
     /**
      * 根据实体跟新
      * */
-    public <T> int updateByEntity(T entity);
+    public  int updateByEntity(Map<String,Object> map);
 
     /**
      * 批量跟新
      * */
-    public  <T> int updateByList(List<T> list);
+    public  int updateByList(Map<String,Object> map);
 
     /**
      * 根据sql跟新
@@ -52,12 +51,12 @@ public interface BaseDao<T extends Serializable> {
     /**
      *根据id删除
      * */
-    public  int deleteById(String id);
+    public  int deleteById(Map<String,Object> map);
 
     /**
      * 根据ids 删除
      * */
-    public int deleteByList(List<String> list);
+    public int deleteByList(Map<String,Object> map);
 
     /**
      * 根据sql删除

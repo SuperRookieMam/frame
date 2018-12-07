@@ -1,16 +1,16 @@
 package com.yhl.config;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import java.util.Properties;
 
 @Configuration
 @AutoConfigureAfter(MybatisConfig.class)
-public class MyBatisMapperScannerConfig {
+public class MyBatisMapperScannerConfig extends MapperScannerConfigurer {
 
     /**
      * MapperScannerConfigurer将扫描basePackage所指定的包下的所有接口类（包括子类），
@@ -19,6 +19,7 @@ public class MyBatisMapperScannerConfig {
      * */
     @Bean
     public  static MapperScannerConfigurer mapperScannerConfigurer(){
+        //注意这里我用的通用的TK 通用的
         MapperScannerConfigurer mapperScannerConfigurer =new MapperScannerConfigurer();
         /**
          * 这个属性一般都用不到，只有当你配置多数据源的时候，

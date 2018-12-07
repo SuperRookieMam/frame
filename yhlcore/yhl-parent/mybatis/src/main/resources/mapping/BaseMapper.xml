@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhl.dao.BaseMapper">
+
+    <select id="selectListByWhere" resultType="java.util.Map" parameterType="java.util.Map">
+        select
+        ${columns}
+        from
+        ${tableName}
+        <where>
+            <trim suffixOverrides=" and ">
+                <if test="likeMap !=null">
+                    <foreach collection="likeMap" index="likeKey" item="likeEntity" separator=" and " close=" and ">
+                        ${likeKey} like '%${likeEntity}%'
+                    </foreach>
+                </if>
+                <if test="notLikeMap !=null">
+                    <foreach collection="notLikeMap" index="notLikeKey" item="notLikeEntity" separator=" and "
+                             close=" and ">
+                        ${notLikeKey} not like '%${notLikeKey}%'
+                    </foreach>
+                </if>
+                <if test="gtMap !=null">
+                    <foreach collection="gtMap" index="gtKey" item="gtEntity" separator=" and " close=" and ">
+                        ${gtKey} &gt; #{gtEntity}
+                    </foreach>
+                </if>
+                <if test="ltMap !=null">
+                    <foreach collection="ltMap" index="ltKey" item="ltEntity" separator=" and " close=" and ">
+                        ${ltKey} &lt; #{ltEntity}
+                    </foreach>
+                </if>
+                <if test="leMap !=null">
+                    <foreach collection="leMap" index="leKey" item="leEntity" separator=" and " close=" and ">
+                        ${leKey} &lt;= #{leEntity}
+                    </foreach>
+                </if>
+                <if test="geMap !=null">
+                    <foreach collection="geMap" index="geKey" item="geEntity" separator=" and " close=" and ">
+                        ${geKey} &gt;= #{geEntity}
+                    </foreach>
+                </if>
+                <if test="eqMap !=null">
+                    <foreach collection="eqMap" index="eqKey" item="eqEntity" separator=" and " close=" and ">
+                        ${eqKey} = #{eqEntity}
+                    </foreach>
+                </if>
+                <if test="notEqMap !=null">
+                    <foreach collection="notEqMap" index="notEqKey" item="notEqEntity" separator=" and " close=" and ">
+                        ${notEqKey} != #{notEqEntity}
+                    </foreach>
+                </if>
+                <if test="inMap !=null">
+                    <foreach collection="inMap" index="inKey" item="inEntity" separator=" and " close=" and ">
+                        ${inKey} in ( ${inEntity} )
+                    </foreach>
+                </if>
+                <if test="notInMap !=null">
+                    <foreach collection="notInMap" index="notInKey" item="notInEntity" separator=" and " close=" and ">
+                        ${notInKey} in ( ${notInEntity} )
+                    </foreach>
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="select" resultType="java.util.Map" parameterType="java.util.Map">
+        select
+         count(0)
+        from
+         ${tableName}
+        <where>
+            <trim suffixOverrides=" and ">
+                <if test="likeMap !=null">
+                    <foreach collection="likeMap" index="likeKey" item="likeEntity" separator=" and " close=" and ">
+                        ${likeKey} like '%${likeEntity}%'
+                    </foreach>
+                </if>
+                <if test="notLikeMap !=null">
+                    <foreach collection="notLikeMap" index="notLikeKey" item="notLikeEntity" separator=" and "
+                             close=" and ">
+                        ${notLikeKey} not like '%${notLikeKey}%'
+                    </foreach>
+                </if>
+                <if test="gtMap !=null">
+                    <foreach collection="gtMap" index="gtKey" item="gtEntity" separator=" and " close=" and ">
+                        ${gtKey} &gt; #{gtEntity}
+                    </foreach>
+                </if>
+                <if test="ltMap !=null">
+                    <foreach collection="ltMap" index="ltKey" item="ltEntity" separator=" and " close=" and ">
+                        ${ltKey} &lt; #{ltEntity}
+                    </foreach>
+                </if>
+                <if test="leMap !=null">
+                    <foreach collection="leMap" index="leKey" item="leEntity" separator=" and " close=" and ">
+                        ${leKey} &lt;= #{leEntity}
+                    </foreach>
+                </if>
+                <if test="geMap !=null">
+                    <foreach collection="geMap" index="geKey" item="geEntity" separator=" and " close=" and ">
+                        ${geKey} &gt;= #{geEntity}
+                    </foreach>
+                </if>
+                <if test="eqMap !=null">
+                    <foreach collection="eqMap" index="eqKey" item="eqEntity" separator=" and " close=" and ">
+                        ${eqKey} = #{eqEntity}
+                    </foreach>
+                </if>
+                <if test="notEqMap !=null">
+                    <foreach collection="notEqMap" index="notEqKey" item="notEqEntity" separator=" and " close=" and ">
+                        ${notEqKey} != #{notEqEntity}
+                    </foreach>
+                </if>
+                <if test="inMap !=null">
+                    <foreach collection="inMap" index="inKey" item="inEntity" separator=" and " close=" and ">
+                        ${inKey} in ( ${inEntity} )
+                    </foreach>
+                </if>
+                <if test="notInMap !=null">
+                    <foreach collection="notInMap" index="notInKey" item="notInEntity" separator=" and " close=" and ">
+                        ${notInKey} in ( ${notInEntity} )
+                    </foreach>
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,6 +1,8 @@
 package com.yhl.dao.impl;
 
 import com.yhl.dao.BaseDao;
+import com.yhl.util.EntityClassUtil;
+import com.yhl.util.MyClassUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +14,23 @@ import java.util.Map;
 
 @Component
 public class BaseDaoImpl <T extends Serializable>  extends SqlSessionDaoSupport implements BaseDao<T> {
+   @Autowired
+    private  SqlSessionTemplate sqlSessionTemplate;
 
-    @Autowired
-    SqlSessionTemplate sqlSessionTemplate;
+    private  String nameSpace="com.yhl.dao.BaseMapper";
+    private  String[] nameFunction={".selectListByWhere"};
 
     @Override
-    public <T> T findById(String id) {
+    public <T> T findById(Map<String,Object> map) {
 
         return null;
     }
 
     @Override
     public <T> List<T> findByParams(Map<String,Object> map) {
-        return null;
+        List<Map<String,Object>> list =  sqlSessionTemplate.selectList(nameSpace+nameFunction[0],map);
+        Class clazz = MyClassUtil.getFirstClass(this.getClass());
+        return EntityClassUtil.initEntityList(list,clazz);
     }
 
     @Override
@@ -43,12 +49,12 @@ public class BaseDaoImpl <T extends Serializable>  extends SqlSessionDaoSupport 
     }
 
     @Override
-    public <T> int updateByEntity(T entity) {
+    public int updateByEntity(Map<String,Object> map) {
         return 0;
     }
 
     @Override
-    public <T> int updateByList(List<T> list) {
+    public  int updateByList(Map<String,Object> map) {
         return 0;
     }
 
@@ -58,12 +64,12 @@ public class BaseDaoImpl <T extends Serializable>  extends SqlSessionDaoSupport 
     }
 
     @Override
-    public int deleteById(String id) {
+    public int deleteById(Map<String,Object> map) {
         return 0;
     }
 
     @Override
-    public int deleteByList(List<String> list) {
+    public int deleteByList(Map<String,Object> map) {
         return 0;
     }
 
