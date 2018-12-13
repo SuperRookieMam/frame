@@ -48,7 +48,7 @@ public class MyMybatisInterrupt implements Interceptor {
              String className =statementId.substring(0,statementId.lastIndexOf("."));
              Class daoClazz = MyClassUtil.getClassForName(className);
              Class superClazz=  daoClazz.getSuperclass();
-             if (!BaseDao.class.getTypeName().equals(superClazz.getTypeName())){
+             if (!BaseDao.class.getName().equals(superClazz.getName())){
                  return invocation.proceed();
              }
              Class paramClass = MyClassUtil.getFirstClass(superClazz);
@@ -93,7 +93,7 @@ public class MyMybatisInterrupt implements Interceptor {
              MyClassUtil.setFieldByName(defaultParameterHandler,"parameterObject",parameterObject);
              defaultParameterHandler.setParameters((PreparedStatement) invocation.getArgs()[0]);
          // 拦截 Executor 的 createCacheKey 方法，pageHelper插件会拦截 query 方法，调用此方法，提前将参数设置到参数集合中
-         // 拦截 Executor 的 update 方法 生成sql前将 tenantId 设置到实体中
+             // 拦截 Executor 的 update 方法 生成sql前将 tenantId 设置到实体中
          }else if (target instanceof Executor){
 
          }else if (target instanceof ResultSetHandler){
