@@ -1,14 +1,11 @@
 package com.yhl.Interapt;
 
-import com.yhl.dao.BaseDao;
-import com.yhl.util.MyClassUtil;
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.parameter.ParameterHandler;
+import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
-import tk.mybatis.mapper.entity.EntityTable;
-import tk.mybatis.mapper.mapperhelper.EntityHelper;
 
-import java.util.Map;
 import java.util.Properties;
 
 
@@ -20,12 +17,26 @@ import java.util.Properties;
  *Executor的执行大概是这样的流程：
  * Executor->Plugin->Interceptor->Invocation
  * Executor.Method->Plugin.invoke->Interceptor.intercept->Invocation.proceed->method.invoke
- * */
+ *
+ * 如果拦截的是同一个目标方法，那么 yy拦截器将先执行。
+ * 可拦截的目标方法有以下(大致的先后顺序):
+ *   Executor
+ * (update, query, flushStatements,
+ *  commit,  rollback, getTransaction,
+ *  close, isClosed)
+ *   ParameterHandler
+ * (getParameterObject, setParameters)
+ *
+ *   StatementHandler
+ * (prepare, parameterize, batch, update, query)
+ *   ResultSetHandler
+ * (handleResultSets, handleOutputParameters)
+ *  */
 @Intercepts({
         @Signature(
                 type = Executor.class,
                 method = "update",
-                args = {MappedStatement.class, Object.class}
+                args = {MappedStatement.class, Object.class, ParameterHandler.class, ResultSetHandler.class}
         )
 })
 public class MybatisInterrcept  implements Interceptor {
@@ -33,7 +44,10 @@ public class MybatisInterrcept  implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         final  Object[] args =invocation.getArgs();
         final  MappedStatement mappedStatement=(MappedStatement)args[0];
-        final  Object parameter=args[1];
+        final  ParameterHandler parameterHandler=(ParameterHandler)args[0];
+        final  ResultSetHandler resultSetHandler=(ResultSetHandler)args[0];
+        Executor executor=(Executor)invocation.getTarget();
+        /*final  Object parameter=args[1];
         //获取被拦截的对象
         Object target = invocation.getTarget();
         System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -68,7 +82,7 @@ public class MybatisInterrcept  implements Interceptor {
              throw  new  RuntimeException("参数为空");
          }
         map.put("tableName",tableName);
-        map.put("columns",columnStr);
+        map.put("columns",columnStr);*/
 
 
         return invocation.proceed();
