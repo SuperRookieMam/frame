@@ -16,6 +16,7 @@
     <modules>
         <module>yhl-base</module>
         <module>mybatis</module>
+        <module>orm</module>
     </modules>
 
     <artifactId>yhl-parent</artifactId>
