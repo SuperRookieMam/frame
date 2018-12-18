@@ -1,57 +1,58 @@
-package com.yhl.constpackage;
+package com.yhl.orm.constant;
 
 
 import com.alibaba.fastjson.JSONArray;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
-@ApiModel(value = "查询数据库参数")
+/**
+ * 查询数据库参数
+ * */
 public class Params implements Serializable {
+
     private static final long serialVersionUID = 8057709322192900635L;
 
-    @ApiModelProperty(value = "当前页", dataType = "Integer", required = true)
+    //value = "当前页", dataType = "Integer", required = true
     private  Integer pageNum;
 
-    @ApiModelProperty(value = "分页大小", dataType = "Integer", required = true)
+    //value = "分页大小", dataType = "Integer", required = true
     private Integer pageSize;
 
-    @ApiModelProperty(value = "排序", dataType = "JSONArray")
+    //value = "排序", dataType = "JSONArray"
     private JSONArray sort; //排序对象{'name': 'desc'}
 
-    @ApiModelProperty(value = "模糊", dataType = "JSONArray")
+    //value = "模糊", dataType = "JSONArray"
     private JSONArray like; //模糊
 
-    @ApiModelProperty(value = "模糊反向", dataType = "JSONArray")
+    //value = "模糊反向", dataType = "JSONArray"
     private JSONArray notLike; //模糊
 
-    @ApiModelProperty(value = "小于", dataType = "JSONArray")
+    //value = "小于", dataType = "JSONArray"
     private JSONArray lt; //小于
 
 
-    @ApiModelProperty(value = "大于", dataType = "JSONArray")
+    //value = "大于", dataType = "JSONArray"
     private JSONArray gt; //大于
 
-    @ApiModelProperty(value = "小于等于", dataType = "JSONArray")
+    //value = "小于等于", dataType = "JSONArray"
     private JSONArray le; //小于等于
 
-    @ApiModelProperty(value = "大于等于", dataType = "JSONArray")
+    //value = "大于等于", dataType = "JSONArray"
     private JSONArray ge; //大于等于
 
-    @ApiModelProperty(value = "等于", dataType = "JSONArray")
+    //value = "等于", dataType = "JSONArray"
     private JSONArray eq; //等于
 
 
-    @ApiModelProperty(value = "不等于", dataType = "JSONArray")
+    //value = "不等于", dataType = "JSONArray"
     private JSONArray notEq; //等于
 
 
-    @ApiModelProperty(value = "in条件", dataType = "JSONArray")
+    //value = "in条件", dataType = "JSONArray"
     private JSONArray in; //等于
 
 
-    @ApiModelProperty(value = "not in条件", dataType = "JSONArray")
+    //value = "not in条件", dataType = "JSONArray"
     private JSONArray notIn; //等于
 
     public Integer getPageNum() {

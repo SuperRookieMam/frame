@@ -1,6 +1,5 @@
 package com.yhl.orm.config;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +10,7 @@ import java.util.Properties;
 
 @Configuration
 @AutoConfigureAfter(MybatisConfig.class)
-@MapperScan(basePackages = {"tk.mybatis.mapper.common.Mapper"})
-public class MyBatisMapperScannerConfig extends MapperScannerConfigurer {
+public class MyBatisMapperScannerConfig {
 
     /**
      * MapperScannerConfigurer将扫描basePackage所指定的包下的所有接口类（包括子类），
@@ -29,7 +27,7 @@ public class MyBatisMapperScannerConfig extends MapperScannerConfigurer {
          * 你就需要通过该属性来指定哪一个sqlSessionFactory
          * */
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("com.**.dao");
+        mapperScannerConfigurer.setBasePackage("com.**.mybatisDao");
         Properties properties = new Properties();
         properties.setProperty("mappers", Mapper.class.getName());
         properties.setProperty("notEmpty", "false");

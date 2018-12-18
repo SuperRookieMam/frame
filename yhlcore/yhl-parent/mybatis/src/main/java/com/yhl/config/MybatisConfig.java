@@ -39,7 +39,6 @@ public class MybatisConfig implements TransactionManagementConfigurer {
         Resource[] resources =solver.getResources("classpath*:mapping/**/*.xml");
         bean.setMapperLocations(resources);
         return bean.getObject();
-
     }
 
     @Bean("sqlSessionTemplate ")
