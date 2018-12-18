@@ -28,7 +28,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
 
     @Override
     public <T> T findById(ID id) {
-        return null;
+        return (T) super.findOne(id);
     }
 
     @Override
