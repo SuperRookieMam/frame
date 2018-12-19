@@ -3,27 +3,26 @@ package com.yhl.orm.dao.impl.jpaDaoImpl;
 import com.yhl.orm.constant.PageInfo;
 import com.yhl.orm.constant.Params;
 import com.yhl.orm.dao.jpaDao.JpaBaseDao;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import com.yhl.orm.util.ParamUtil;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 //@NoRepositoryBean ：启动时不初始化该实体类。是spring date jpa的一种注解
-@NoRepositoryBean
+
 public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaRepository<T,ID > implements JpaBaseDao<T,ID> {
 
     private EntityManager entityManager;
-
-    public JpaBaseDaoImpl(JpaEntityInformation<T, ?> tJpaEntityInformation, EntityManager entityManager){
-        super(tJpaEntityInformation, entityManager);
-    }
+    private Class clazz;
     //父类没有不带参数的构造方法，这里手动构造父类
     public JpaBaseDaoImpl(Class<T> entityClass, EntityManager entityManager) {
-        this(JpaEntityInformationSupport.getMetadata(entityClass,entityManager), entityManager);
+        super(JpaEntityInformationSupport.getMetadata(entityClass,entityManager), entityManager);
         this.entityManager = entityManager;
+        clazz =entityClass;
     }
 
     @Override
@@ -33,56 +32,91 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
 
     @Override
     public <T> List<T> findByParams(Params params) {
-        return null;
+        String  jpql =ParamUtil.getHqlSelectStr(clazz);
+        jpql +=ParamUtil.parseParamToHql(params);
+        TypedQuery typedQuery = entityManager.createQuery(jpql,clazz);
+        List<T> list=typedQuery.getResultList();
+        return list;
     }
 
     @Override
-    public int findContByParams(Params params) {
-        return 0;
+    public int findCountByParams(Params params) {
+        String  jpql =ParamUtil.getHqlSelectCountStr(clazz);
+        jpql +=ParamUtil.parseParamToHql(params);
+        return (int)entityManager.createQuery(jpql).getSingleResult();
     }
 
     @Override
     public <T> PageInfo<T> findPageByParams(Params params) {
-        return null;
+        PageInfo<T> pageInfo=new PageInfo<>();
+        pageInfo.setPageNum(params.getPageNum());
+        pageInfo.setPageSize(params.getPageSize());;
+        pageInfo.setStartRow(params.getPageNum()*params.getPageSize());
+        pageInfo.setEndRow(params.getPageNum()*params.getPageSize()+params.getPageSize());
+        pageInfo.setList(findByParams(params));
+        pageInfo.setTotal(findCountByParams(params));
+        pageInfo.setOrderBy(params.getSort().toString());
+        pageInfo.setPages((int) pageInfo.getTotal()/(pageInfo.getPageSize()==0?1:pageInfo.getPageSize()));
+        return pageInfo;
     }
 
     @Override
-    public Object findByHql(String hql) {
-        return null;
+    public<T1> List<T1>  findByHql(String hql,Class<T1> clazz){
+        return entityManager.createQuery(hql,clazz).getResultList();
     }
 
     @Override
-    public Object findBysql(String sql) {
-        return null;
+    public<T1>  List<T1>  findBysql(String sql,Class<T1> clazz) {
+        return entityManager.createNativeQuery(sql,clazz).getResultList();
     }
-
+    /**
+     * 类似于 hibernate 的 save 方法. 使对象由临时状态变为持久化状态.
+     *和 hibernate 的 save 方法的不同之处: 若对象有 id,
+     * 则不能执行 insert 操作, 而会抛出异常
+     * */
     @Override
     public <T> T insertByEntity(T entity) {
-        return null;
+        entityManager.persist(entity);
+        return entity;
     }
 
     @Override
-    public <T> T insertByList(T[] entitys) {
-        return null;
+    public <T> int insertByList(T[] entitys) {
+        //分批保存相对于速度要块很多
+        int batchSize = entitys.length;
+        for (int i = 0; i < entitys.length; i++) {
+            entityManager.persist(entitys);
+            if (i % batchSize == 0) {
+                entityManager.flush();
+                entityManager.clear();
+            }
+        }
+        return batchSize;
     }
+    /**
+     *总的来说: 类似于 hibernate Session 的 saveOrUpdate 方法.
+     * 对象没有id，插入操作
+     * 对象有id，且和数据库中有对应的id，修改操作
+     * 对象有id，但数据库中找不到对应的id，则抛弃id
+     * 进行插入操作entityManager.merge(customer);
+     * */
 
     @Override
-    public <T> int updateByEntity(T entity) {
-        return 0;
-    }
-
-    @Override
-    public int updateByParam(Params params) {
-        return 0;
+    public <T> T updateByEntity(T entity) {
+        return entityManager.merge(entity);
     }
 
     @Override
     public int updateByHql(String Hql) {
-        return 0;
+        return entityManager.createQuery(Hql).executeUpdate();
     }
 
     @Override
     public int updateBysql(String sql) {
-        return 0;
+        return entityManager.createNativeQuery(sql).executeUpdate();
     }
+
+
+
+
 }

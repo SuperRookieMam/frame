@@ -6,7 +6,24 @@ import com.alibaba.fastjson.JSONArray;
 import java.io.Serializable;
 
 /**
- * 查询数据库参数
+ * {
+ * leftJoin:[
+ *           {field:value,
+ *            with:[{condition:field.字段名 +条件},...]
+ *             },...],
+ * rightJoin:[
+ *           {field:value,
+ *            with:[{condition:field.字段名 +条件},...]
+ *             },...],
+ * innerJoin:[
+ *           {field:value,
+ *            with:[{condition:field.字段名 +条件},...]
+ *             },...],
+ * like:[{field:value,condition:value},...],
+ * sort：[{field: value+desc}]
+ * .
+ * .
+ * }
  * */
 public class Params implements Serializable {
 
@@ -15,7 +32,7 @@ public class Params implements Serializable {
     //value = "当前页", dataType = "Integer", required = true
     private  Integer pageNum;
 
-    //value = "分页大小", dataType = "Integer", required = true
+    //value = "分页大  小", dataType = "Integer", required = true
     private Integer pageSize;
 
     //value = "排序", dataType = "JSONArray"
@@ -54,6 +71,18 @@ public class Params implements Serializable {
 
     //value = "not in条件", dataType = "JSONArray"
     private JSONArray notIn; //等于
+
+    //value = "左链接", dataType = "JSONArray"
+    private JSONArray leftJoin; //等于
+
+    //value = "左链接", dataType = "JSONArray"
+    private JSONArray rightJoin; //等于
+    //value = "左链接", dataType = "JSONArray"
+    private JSONArray innerJoin;
+
+    private JSONArray or;
+
+    private JSONArray groupby;
 
     public Integer getPageNum() {
         return pageNum;
@@ -159,6 +188,46 @@ public class Params implements Serializable {
         this.notIn = notIn;
     }
 
+    public JSONArray getGroupby() {
+        return groupby;
+    }
+
+    public void setGroupby(JSONArray groupby) {
+        this.groupby = groupby;
+    }
+
+    public JSONArray getOr() {
+        return or;
+    }
+
+    public void setOr(JSONArray or) {
+        this.or = or;
+    }
+
+    public JSONArray getLeftJoin() {
+        return leftJoin;
+    }
+
+    public void setLeftJoin(JSONArray leftJoin) {
+        this.leftJoin = leftJoin;
+    }
+
+    public JSONArray getRightJoin() {
+        return rightJoin;
+    }
+
+    public void setRightJoin(JSONArray rightJoin) {
+        this.rightJoin = rightJoin;
+    }
+
+    public JSONArray getInnerJoin() {
+        return innerJoin;
+    }
+
+    public void setInnerJoin(JSONArray innerJoin) {
+        this.innerJoin = innerJoin;
+    }
+
     public String toString() {
         return "Params:{"
                 +"\"pageNum\":"+ pageNum +","
@@ -173,6 +242,10 @@ public class Params implements Serializable {
                 +"\"eq\":" + eq +","
                 +"\"notEq\":" + notEq +","
                 +"\"in\":" + in +","
+                +"\"or\":" + or +","
+                +"\"leftJoin\":" + leftJoin +","
+                +"\"rightJoin\":" + rightJoin +","
+                +"\"innerJoin\":" + innerJoin +","
                 +"\"notIn\":" + notIn +
                 '}';
             }

@@ -4,6 +4,7 @@ import com.yhl.orm.constant.PageInfo;
 import com.yhl.orm.constant.Params;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  *继承勒JpaRepository的接口，findN那些所有方法，
  *JpaSpecificationExecutor 的执行器所有方法
  * */
+@NoRepositoryBean
 public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,ID>, JpaSpecificationExecutor<T> {
 
     /**
@@ -25,7 +27,7 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     /**
      * 根据条件查询条数
      * */
-    public int findContByParams(Params params);
+    public int findCountByParams(Params params);
     /**
      * 分页查询
      * */
@@ -33,11 +35,11 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     /**
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * */
-    public  Object findByHql(String hql);
+    public<T1> List<T1>  findByHql(String hql,Class<T1> clazz);
     /**
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * */
-    public  Object findBysql(String sql);
+    public<T1>  List<T1>  findBysql(String sql,Class<T1> clazz);
     /**
      * 根据一个实体插入
      * */
@@ -46,15 +48,11 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     /**
      * 批量插入
      * */
-    public <T> T insertByList(T[] entitys);
+    public <T> int insertByList(T[] entitys);
     /**
      * 根据实体跟新
      * */
-    public<T> int updateByEntity(T entity);
-    /**
-     * 根据参数跟新
-     * */
-    public int updateByParam(Params params);
+    public<T> T updateByEntity(T entity);
     /**
      *根据Hql跟新
      * */

@@ -1,5 +1,6 @@
 package com.yhl.orm.config;
 
+import com.yhl.orm.config.factory.BaseDaoFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -29,9 +30,10 @@ import java.util.Properties;
             sqlSessionFactoryRef = "sqlSessionFactory"
             )
 @EnableJpaRepositories(
+        basePackages= {"com.**.jpaDao"},
         entityManagerFactoryRef="localContainerEntityManagerFactoryBean",
         transactionManagerRef="jpaTransactionManager",
-        basePackages= {"com.**.jpaDao"}
+        repositoryFactoryBeanClass = BaseDaoFactoryBean.class
         )//最后一个时dao包扫描什么包
 public class MybatisConfig {
     @Autowired
@@ -89,7 +91,6 @@ public class MybatisConfig {
         factoryBean.setResourceLoader();
         factoryBean.setSharedCacheMode();
         factoryBean.setValidationMode();
-        factoryBean.setBeanFactory();
         factoryBean.setBeanName();
         factoryBean.setBootstrapExecutor();
         factoryBean.setEntityManagerFactoryInterface();
@@ -106,6 +107,10 @@ public class MybatisConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.ddl-auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("base-package", "com.**.jpaDao");
+        properties.setProperty("factory-class", BaseDaoFactoryBean.class.getName());
+        properties.setProperty("entity-manager-factory-ref","localContainerEntityManagerFactoryBean");
+        properties.setProperty("transactionManagerRef","jpaTransactionManager");
         return properties;
     }
     @Bean(name = "jpaTransactionManager")
