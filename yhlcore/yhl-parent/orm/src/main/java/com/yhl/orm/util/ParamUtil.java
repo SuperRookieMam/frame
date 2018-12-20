@@ -3,7 +3,9 @@ package com.yhl.orm.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yhl.orm.constant.Params;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ParamUtil {
 
     /**

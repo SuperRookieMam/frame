@@ -2,6 +2,7 @@ package com.yhl.orm.constant;
 
 
 import com.alibaba.fastjson.JSONArray;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
@@ -24,7 +25,7 @@ import java.io.Serializable;
  * .
  * .
  * }
- * */
+ * */@Component
 public class Params implements Serializable {
 
     private static final long serialVersionUID = 8057709322192900635L;

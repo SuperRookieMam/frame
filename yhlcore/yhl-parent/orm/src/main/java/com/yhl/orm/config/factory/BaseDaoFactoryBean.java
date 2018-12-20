@@ -13,5 +13,4 @@ public class BaseDaoFactoryBean<R extends JpaRepository<T, ID>, T, ID extends Se
     protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
         return new BaseDaoFactory(entityManager);
     }
-
 }

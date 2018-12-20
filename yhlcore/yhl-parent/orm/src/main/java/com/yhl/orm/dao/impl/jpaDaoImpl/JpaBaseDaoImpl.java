@@ -4,25 +4,22 @@ import com.yhl.orm.constant.PageInfo;
 import com.yhl.orm.constant.Params;
 import com.yhl.orm.dao.jpaDao.JpaBaseDao;
 import com.yhl.orm.util.ParamUtil;
-import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 //@NoRepositoryBean ：启动时不初始化该实体类。是spring date jpa的一种注解
-
 public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaRepository<T,ID > implements JpaBaseDao<T,ID> {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     private Class clazz;
     //父类没有不带参数的构造方法，这里手动构造父类
-    public JpaBaseDaoImpl(Class<T> entityClass, EntityManager entityManager) {
-        super(JpaEntityInformationSupport.getMetadata(entityClass,entityManager), entityManager);
+    public JpaBaseDaoImpl( Class<T> modelClass, EntityManager entityManager) {
+        super(modelClass, entityManager);
         this.entityManager = entityManager;
-        clazz =entityClass;
+        clazz =modelClass;
     }
 
     @Override
@@ -115,8 +112,5 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     public int updateBysql(String sql) {
         return entityManager.createNativeQuery(sql).executeUpdate();
     }
-
-
-
 
 }

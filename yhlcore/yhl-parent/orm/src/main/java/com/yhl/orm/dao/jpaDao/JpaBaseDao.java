@@ -3,7 +3,6 @@ package com.yhl.orm.dao.jpaDao;
 import com.yhl.orm.constant.PageInfo;
 import com.yhl.orm.constant.Params;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import java.util.List;
  *JpaSpecificationExecutor 的执行器所有方法
  * */
 @NoRepositoryBean
-public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,ID>, JpaSpecificationExecutor<T> {
+public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,ID>/*, JpaSpecificationExecutor<T>*/ {
 
     /**
      * 自定义接口
@@ -62,6 +61,7 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      *根据sql跟新
      * */
     public int updateBysql(String sql);
+
 
     /**
      * JpaRepository的接口

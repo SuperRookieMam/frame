@@ -1,8 +1,10 @@
 package com.yhl.orm.constant;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.List;
-
+@Component
 public class PageInfo<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
