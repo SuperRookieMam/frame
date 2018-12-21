@@ -115,4 +115,17 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         return entityManager.createNativeQuery(sql).executeUpdate();
     }
 
+    @Override
+    public void deleteByEntity(T entity) {
+        entityManager.remove(entity);
+    }
+
+    @Override
+    public int deleteByIds(ID[] ids,String IdName) {
+        if (ids==null||ids.length==0){
+            return 0;
+        }
+        String jpql =ParamUtil.getHqlDeleteStr(clazz,IdName,ids);
+        return entityManager.createQuery(jpql).executeUpdate();
+    }
 }

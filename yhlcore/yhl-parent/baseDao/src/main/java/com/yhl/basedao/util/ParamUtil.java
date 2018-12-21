@@ -148,10 +148,21 @@ public class ParamUtil {
     public  static<T> String getHqlSelectStr(Class<T> clazz){
             return "select n from "+clazz.getSimpleName()+" as n ";
     }
+
     public  static<T> String getHqlSelectCountStr(Class<T> clazz){
         return "select count(*) from "+clazz.getSimpleName()+" as n ";
     }
-
-
+    public static<T> String getHqlDeleteStr(Class<T> clazz,String idName,Object[] ids){
+            StringBuffer stringBuffer =new StringBuffer("");
+            stringBuffer.append("delete from ")
+                        .append(clazz.getSimpleName())
+                        .append(" where ")
+                        .append(idName)
+                        .append("in (");
+            for (int i = 0; i <ids.length ; i++) {
+                stringBuffer= i==0?stringBuffer.append("'"+ids[i]+"'"):stringBuffer.append(",'"+ids[i]+"'");
+            }
+        return stringBuffer.append(")").toString();
+    }
 
 }

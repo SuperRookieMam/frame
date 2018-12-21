@@ -12,7 +12,11 @@
         <module>yhl-parent</module>
     </modules>
     <packaging>pom</packaging>
-
+<properties>
+    <!-- plugs -->
+    <maven.deploy.version>2.7</maven.deploy.version>
+    <maven.source.version>2.4</maven.source.version>
+</properties>
 
    <!-- <distributionManagement>负责管理构件的发布-->
     <distributionManagement>
@@ -29,5 +33,38 @@
             <url>http://localhost:7322/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+<build>
+    <plugins>
 
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+        <!-- 跳过单元测试 -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+                <skipTests>true</skipTests>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>${maven.deploy.version}</version>
+        </plugin>
+        <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven.source.version}</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>jar-no-fork</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
 </project>

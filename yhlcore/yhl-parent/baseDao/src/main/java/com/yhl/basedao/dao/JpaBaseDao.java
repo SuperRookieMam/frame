@@ -64,6 +64,9 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * */
     public int updateBysql(String sql);
 
+    public void deleteByEntity(T entity);
+
+    public int deleteByIds(ID[] ids,String IdName);
 
     /**
      * JpaRepository的接口
