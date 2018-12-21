@@ -15,8 +15,7 @@
 
     <modules>
         <module>yhl-base</module>
-        <module>mybatis</module>
-        <module>orm</module>
+        <module>baseDao</module>
     </modules>
 
     <artifactId>yhl-parent</artifactId>

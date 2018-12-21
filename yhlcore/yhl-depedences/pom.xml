@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.15.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath />  <!-- lookup parent from repository -->
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -55,11 +55,6 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${springboot.mybatis.version}</version>
-            </dependency>
-             <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-data-jpa.version}</version>
             </dependency>
 
             <dependency>
@@ -155,7 +150,7 @@
         <repository>
             <id>dmmaven-central</id>
             <name>dm maven</name>
-            <url>http://192.168.2.127:7322/nexus/content/groups/public/</url>
+            <url>http://127.0.0.1:7322/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -166,11 +161,11 @@
     </repositories>-->
 
     <!--插件仓库地址 暂时不用不配置-->
-    <!--<pluginRepositories>
+   <!-- <pluginRepositories>
         <pluginRepository>
             <id>dmmaven-central</id>
             <name>dm maven</name>
-            <url>http://192.168.2.127:7322/nexus/content/groups/public/</url>
+            <url>http://127.0.0.1:7322/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -181,16 +176,16 @@
     </pluginRepositories>-->
 
     <!--发布配置 暂时不配置-->
-   <!-- <distributionManagement>
+   <!--<distributionManagement>
         <repository>
             <id>dmzl-releases</id>
             <name>releases</name>
-            <url>http://192.168.2.127:7322/nexus/content/repositories/releases/</url>
+            <url>http://127.0.0.1:7322/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>dmzl-snapshots</id>
             <name>snapshots</name>
-            <url>http://192.168.2.127:7322/nexus/content/repositories/snapshots/</url>
+            <url>http://127.0.0.1:7322/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>-->
 
