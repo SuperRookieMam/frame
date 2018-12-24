@@ -65,5 +65,10 @@
            <artifactId>springfox-swagger2</artifactId>
        </dependency>
 
+       <dependency>
+           <groupId>com.yhl</groupId>
+           <artifactId>baseDao</artifactId>
+           <version>0.0.1-SNAPSHOT</version>
+       </dependency>
    </dependencies>
 </project>
