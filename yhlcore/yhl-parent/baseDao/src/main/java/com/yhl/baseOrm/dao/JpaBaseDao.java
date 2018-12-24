@@ -1,8 +1,8 @@
-package com.yhl.basedao.dao;
+package com.yhl.baseOrm.dao;
 
 
-import com.yhl.basedao.constant.PageInfo;
-import com.yhl.basedao.constant.Params;
+import com.yhl.baseOrm.constant.PageInfo;
+import com.yhl.baseOrm.constant.Params;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -64,7 +64,7 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * */
     public int updateBysql(String sql);
 
-    public void deleteByEntity(T entity);
+    public<T> void deleteByEntity(T entity);
 
     public int deleteByIds(ID[] ids,String IdName);
 

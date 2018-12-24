@@ -1,7 +1,7 @@
 package com.yhl.base.service;
 
 import com.yhl.base.dto.ResultDto;
-import com.yhl.basedao.constant.Params;
+import com.yhl.baseOrm.constant.Params;
 
 import java.io.Serializable;
 

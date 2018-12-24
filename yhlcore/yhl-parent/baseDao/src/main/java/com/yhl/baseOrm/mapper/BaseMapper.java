@@ -1,4 +1,4 @@
-package com.yhl.basedao.mapper;
+package com.yhl.baseOrm.mapper;
 
 import org.apache.ibatis.annotations.Param;
 

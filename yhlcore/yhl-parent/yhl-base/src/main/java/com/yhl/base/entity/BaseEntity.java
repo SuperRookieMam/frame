@@ -2,9 +2,7 @@ package com.yhl.base.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +10,21 @@ import java.util.Date;
 /**
  * 添加一些数据库都有的公共字段或者做一些
  * **/
-
+@Entity
+@Table(name="BaseEntity")
+/**
+ * 1.Single Table Strategy 单表策略,一张表包含基类与子类的所有数据,
+ * 很多情况下都是采用这样的冗余设计,
+ * 通过一个discriminator来区分
+ * 2.Table Per Class Strategy ,
+ * 每个子类对应一张表,每张表都拥有基类的属性，
+ * 基类不会生成表。
+ * 3..Join Strategy ,仍然是每个子类对应一张表，
+ * 但此表中不包含基类的属性,
+ * 仅仅是此子类的扩展属性,共享基类的属性
+ * */
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "BaseEntity", discriminatorType = DiscriminatorType.STRING)
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class BaseEntity implements Serializable {
     @Id

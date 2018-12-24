@@ -1,4 +1,4 @@
-package com.yhl.basedao.util;
+package com.yhl.baseOrm.util;
 
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
-package com.yhl.basedao.dao.Impl;
+package com.yhl.baseOrm.dao.Impl;
 
 
-import com.yhl.basedao.constant.PageInfo;
-import com.yhl.basedao.constant.Params;
-import com.yhl.basedao.dao.JpaBaseDao;
-import com.yhl.basedao.util.ParamUtil;
+import com.yhl.baseOrm.constant.PageInfo;
+import com.yhl.baseOrm.constant.Params;
+import com.yhl.baseOrm.dao.JpaBaseDao;
+import com.yhl.baseOrm.util.ParamUtil;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
@@ -116,7 +116,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
 
     @Override
-    public void deleteByEntity(T entity) {
+    public<T> void deleteByEntity(T entity) {
         entityManager.remove(entity);
     }
 

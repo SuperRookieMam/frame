@@ -1,6 +1,6 @@
-package com.yhl.basedao.config;
+package com.yhl.baseOrm.config;
 
-import com.yhl.basedao.config.factory.BaseDaoFactoryBean;
+import com.yhl.baseOrm.config.factory.BaseDaoFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

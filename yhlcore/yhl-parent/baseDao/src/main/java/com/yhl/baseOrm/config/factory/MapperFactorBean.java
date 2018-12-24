@@ -1,4 +1,4 @@
-package com.yhl.basedao.config.factory;
+package com.yhl.baseOrm.config.factory;
 
 import org.mybatis.spring.mapper.MapperFactoryBean;
 

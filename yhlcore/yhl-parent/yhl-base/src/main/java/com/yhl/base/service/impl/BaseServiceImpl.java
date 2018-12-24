@@ -3,8 +3,8 @@ package com.yhl.base.service.impl;
 import com.yhl.base.dao.BaseDao;
 import com.yhl.base.dto.ResultDto;
 import com.yhl.base.service.BaseService;
-import com.yhl.basedao.constant.PageInfo;
-import com.yhl.basedao.constant.Params;
+import com.yhl.baseOrm.constant.PageInfo;
+import com.yhl.baseOrm.constant.Params;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class BaseServiceImpl<T,ID extends Serializable> implements BaseService<T, ID> {
     
     @Autowired
-    BaseDao baseDao;
+    BaseDao<T,ID> baseDao;
     
     @Override
     public <T> ResultDto findById(ID id) {

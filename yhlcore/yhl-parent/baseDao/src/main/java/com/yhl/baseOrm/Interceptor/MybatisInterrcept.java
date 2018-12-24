@@ -1,4 +1,4 @@
-package com.yhl.basedao.Interceptor;
+package com.yhl.baseOrm.Interceptor;
 
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Invocation;

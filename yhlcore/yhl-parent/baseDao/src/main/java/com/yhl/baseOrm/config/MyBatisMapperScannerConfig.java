@@ -1,4 +1,4 @@
-package com.yhl.basedao.config;
+package com.yhl.baseOrm.config;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;

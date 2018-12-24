@@ -1,7 +1,7 @@
-package com.yhl.basedao.config.factory;
+package com.yhl.baseOrm.config.factory;
 
-import com.yhl.basedao.dao.Impl.JpaBaseDaoImpl;
-import com.yhl.basedao.dao.JpaBaseDao;
+import com.yhl.baseOrm.dao.Impl.JpaBaseDaoImpl;
+import com.yhl.baseOrm.dao.JpaBaseDao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;

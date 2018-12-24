@@ -2,7 +2,7 @@ package com.yhl.base.controller;
 
 import com.yhl.base.dto.ResultDto;
 import com.yhl.base.service.BaseService;
-import com.yhl.basedao.constant.Params;
+import com.yhl.baseOrm.constant.Params;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

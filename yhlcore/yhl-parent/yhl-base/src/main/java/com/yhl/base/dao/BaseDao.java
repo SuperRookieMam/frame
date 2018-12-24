@@ -1,6 +1,6 @@
 package com.yhl.base.dao;
 
-import com.yhl.basedao.dao.JpaBaseDao;
+import com.yhl.baseOrm.dao.JpaBaseDao;
 
 import java.io.Serializable;
 

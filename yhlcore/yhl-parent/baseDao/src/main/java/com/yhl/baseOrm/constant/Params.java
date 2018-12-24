@@ -1,4 +1,4 @@
-package com.yhl.basedao.constant;
+package com.yhl.baseOrm.constant;
 
 
 import com.alibaba.fastjson.JSONArray;

@@ -1,8 +1,8 @@
-package com.yhl.basedao.util;
+package com.yhl.baseOrm.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yhl.basedao.constant.Params;
+import com.yhl.baseOrm.constant.Params;
 import org.springframework.stereotype.Component;
 
 @Component
