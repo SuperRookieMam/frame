@@ -1,9 +1,9 @@
-package com.yhl.base.config;
+package com.yhl.base.component.config;
 
 
-import com.yhl.base.condition.MybatisCondtion;
-import com.yhl.base.condition.PrimaryCondition;
-import com.yhl.base.condition.SecondCondition;
+import com.yhl.base.component.condition.MybatisCondtion;
+import com.yhl.base.component.condition.PrimaryCondition;
+import com.yhl.base.component.condition.SecondCondition;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;

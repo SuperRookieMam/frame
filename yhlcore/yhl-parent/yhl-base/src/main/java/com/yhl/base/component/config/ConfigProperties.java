@@ -1,4 +1,4 @@
-package com.yhl.base.config;
+package com.yhl.base.component.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.yhl.base.condition;
+package com.yhl.base.component.condition;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Condition;
