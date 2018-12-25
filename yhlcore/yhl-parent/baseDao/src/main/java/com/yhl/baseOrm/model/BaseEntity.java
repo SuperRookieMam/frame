@@ -1,7 +1,6 @@
-package com.yhl.base.entity;
+package com.yhl.baseOrm.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
