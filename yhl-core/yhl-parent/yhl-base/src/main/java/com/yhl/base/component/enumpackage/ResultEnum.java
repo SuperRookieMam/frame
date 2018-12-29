@@ -1,4 +1,4 @@
-package com.yhl.baseOrm.enumpackage;
+package com.yhl.base.component.enumpackage;
 
 public enum ResultEnum {
     SUCCESS(0, "success"),

@@ -1,18 +1,17 @@
-package com.yhl.baseOrm.service.impl;
+package com.yhl.base.baseService.impl;
 
-import com.yhl.baseOrm.constant.PageInfo;
-import com.yhl.baseOrm.constant.Params;
-import com.yhl.baseOrm.dao.BaseDao;
-import com.yhl.baseOrm.dto.ResultDto;
-import com.yhl.baseOrm.service.BaseService;
+import com.yhl.base.baseDao.BaseDao;
+import com.yhl.base.baseEntity.BaseEntity;
+import com.yhl.base.baseService.BaseService;
+import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.PageInfo;
+import com.yhl.baseorm.component.constant.Params;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Service
-public class BaseServiceImpl<T,ID extends Serializable> implements BaseService<T, ID> {
+public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> implements BaseService<T, ID> {
     
     @Autowired
     BaseDao<T,ID> baseDao;

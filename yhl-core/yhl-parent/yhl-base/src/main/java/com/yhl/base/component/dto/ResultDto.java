@@ -1,7 +1,6 @@
-package com.yhl.baseOrm.dto;
+package com.yhl.base.component.dto;
 
-
-import com.yhl.baseOrm.enumpackage.ResultEnum;
+import com.yhl.base.component.enumpackage.ResultEnum;
 
 public class ResultDto {
 
