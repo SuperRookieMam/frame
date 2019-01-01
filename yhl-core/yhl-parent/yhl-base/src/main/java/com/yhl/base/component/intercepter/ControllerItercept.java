@@ -1,6 +1,7 @@
 package com.yhl.base.component.intercepter;
 
-import com.yhl.base.dto.ResultDto;
+
+import com.yhl.base.component.dto.ResultDto;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

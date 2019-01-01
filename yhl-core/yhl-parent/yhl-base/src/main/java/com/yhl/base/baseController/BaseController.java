@@ -13,23 +13,25 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
 
     @Autowired
     BaseService<T,ID> baseService;
-    @GetMapping("/{id}")
+
+    @GetMapping("{id}")
     @ResponseBody
     public ResultDto findById(@PathVariable("id") ID id){
         return baseService.findById(id);
     }
+
     /**
      * 根据参数自定义查询
-     * */
+     * *//*
     @GetMapping("/list")
     @ResponseBody
     public ResultDto findByParams(@RequestBody Params params){
         return  baseService.findByParams(params);
     }
 
-    /**
+    *//**
      * 分页查询
-     * */
+     * *//*
     @GetMapping("/pageInfo")
     @ResponseBody
     public ResultDto findPageByParams(@RequestBody  Params params){
@@ -41,18 +43,18 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
         return  baseService.updateByEntity(entity);
     }
 
-    /**
+    *//**
      * 批量插入
-     * */
+     * *//*
     @PostMapping("/insert/entitys")
     @ResponseBody
     public <T> ResultDto insertByList(@RequestBody T[] entitys){
         return  baseService.insertByList(entitys);
     }
 
-    /**
+    *//**
      * 根据实体跟新
-     * */
+     * *//*
     @PutMapping("/update")
     @ResponseBody
     public<T> ResultDto updateByEntity(T entity){
@@ -69,5 +71,5 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     public ResultDto deleteByIds(ID[] ids){
         return  ResultDto.success(baseService.deleteByIds(ids));
     }
-
+*/
 }

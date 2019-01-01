@@ -67,6 +67,8 @@ public class JpaConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.ddl-auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+//        //驼峰转下滑杠明明规则
+        properties.setProperty("hibernate.naming.physical-strategy", "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
        /* properties.setProperty("base-package", "com.**.jpaDao");
         properties.setProperty("factory-class", BaseDaoFactoryBean.class.getName());
         properties.setProperty("entity-manager-factory-ref","localContainerEntityManagerFactoryBean");

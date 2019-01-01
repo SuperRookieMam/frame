@@ -28,6 +28,7 @@ import java.util.Date;
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")*/
 @MappedSuperclass
 public class BaseEntity<ID> implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")

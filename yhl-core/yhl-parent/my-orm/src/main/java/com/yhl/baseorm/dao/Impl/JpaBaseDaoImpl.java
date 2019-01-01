@@ -29,7 +29,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         return (T) super.findOne(id);
     }
 
-    @Override
+   /* @Override
     public <T> List<T> findByParams(Params params) {
         String  jpql = ParamUtil.getHqlSelectStr(clazz);
         jpql += ParamUtil.parseParamToHql(params);
@@ -68,11 +68,11 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     public<T1>  List<T1>  findBysql(String sql,Class<T1> clazz) {
         return entityManager.createNativeQuery(sql,clazz).getResultList();
     }
-    /**
+    *//**
      * 类似于 hibernate 的 save 方法. 使对象由临时状态变为持久化状态.
      *和 hibernate 的 save 方法的不同之处: 若对象有 id,
      * 则不能执行 insert 操作, 而会抛出异常
-     * */
+     * *//*
     @Override
     public <T> T insertByEntity(T entity) {
         entityManager.persist(entity);
@@ -92,13 +92,13 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         }
         return batchSize;
     }
-    /**
+    *//**
      *总的来说: 类似于 hibernate Session 的 saveOrUpdate 方法.
      * 对象没有id，插入操作
      * 对象有id，且和数据库中有对应的id，修改操作
      * 对象有id，但数据库中找不到对应的id，则抛弃id
      * 进行插入操作entityManager.merge(customer);
-     * */
+     * *//*
 
     @Override
     public <T> T updateByEntity(T entity) {
@@ -127,5 +127,5 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         }
         String jpql =ParamUtil.getHqlDeleteStr(clazz,IdName,ids);
         return entityManager.createQuery(jpql).executeUpdate();
-    }
+    }*/
 }

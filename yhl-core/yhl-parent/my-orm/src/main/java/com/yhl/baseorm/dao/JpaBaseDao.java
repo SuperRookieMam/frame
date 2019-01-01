@@ -21,52 +21,52 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * 自定义接口
      * */
     public <T> T findById(ID id);
-    /**
+  /*  *//**
      * 根据参数自定义查询
-     * */
+     * *//*
     public <T> List<T> findByParams(Params params);
-    /**
+    *//**
      * 根据条件查询条数
-     * */
+     * *//*
     public int findCountByParams(Params params);
-    /**
+    *//**
      * 分页查询
-     * */
+     * *//*
     public <T> PageInfo<T> findPageByParams(Params params);
-    /**
+    *//**
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * */
+     * *//*
     public<T1> List<T1> findByHql(String hql, Class<T1> clazz);
-    /**
+    *//**
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * */
+     * *//*
     public<T1>  List<T1>  findBysql(String sql, Class<T1> clazz);
-    /**
+    *//**
      * 根据一个实体插入
-     * */
+     * *//*
     public <T> T insertByEntity(T entity);
 
-    /**
+    *//**
      * 批量插入
-     * */
+     * *//*
     public <T> int insertByList(T[] entitys);
-    /**
+    *//**
      * 根据实体跟新
-     * */
+     * *//*
     public<T> T updateByEntity(T entity);
-    /**
+    *//**
      *根据Hql跟新
-     * */
+     * *//*
     public int updateByHql(String Hql);
 
-    /**
+    *//**
      *根据sql跟新
-     * */
+     * *//*
     public int updateBysql(String sql);
 
     public<T> void deleteByEntity(T entity);
 
-    public int deleteByIds(ID[] ids, String IdName);
+    public int deleteByIds(ID[] ids, String IdName);*/
 
     /**
      * JpaRepository的接口

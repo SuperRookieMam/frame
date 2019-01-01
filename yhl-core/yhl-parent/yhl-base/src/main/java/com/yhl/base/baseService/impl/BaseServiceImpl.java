@@ -22,7 +22,7 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         return ResultDto.success(entity);
     }
 
-    @Override
+   /* @Override
     public <T> ResultDto  findByParams(Params params) {
        List<T> list = baseDao.findByParams(params);
         return ResultDto.success(list);
@@ -88,4 +88,4 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
     public ResultDto deleteByIds(ID[] ids) {
         return ResultDto.success(baseDao.deleteByIds(ids,"id"));
     }
-}
+*/}
