@@ -1,14 +1,11 @@
 package com.yhl.baseorm.dao;
 
 
-import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.Params;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *继承勒JpaRepository的接口，findN那些所有方法，
@@ -21,6 +18,10 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * 自定义接口
      * */
     public <T> T findById(ID id);
+    /**
+     * 根据一个实体插入
+     * */
+    public <T> T insertByEntity(T entity);
   /*  *//**
      * 根据参数自定义查询
      * *//*
@@ -41,10 +42,7 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1>  List<T1>  findBysql(String sql, Class<T1> clazz);
-    *//**
-     * 根据一个实体插入
-     * *//*
-    public <T> T insertByEntity(T entity);
+    *//*
 
     *//**
      * 批量插入

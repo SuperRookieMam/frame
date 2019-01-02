@@ -4,12 +4,9 @@ import com.yhl.base.baseDao.BaseDao;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
-import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.Params;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> implements BaseService<T, ID> {
     
@@ -21,7 +18,12 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         T entity= (T) baseDao.findById(id);
         return ResultDto.success(entity);
     }
-
+    @Override
+    public <T> ResultDto insertByEntity(T entity) {
+        entity=(T)baseDao.insertByEntity(entity);
+        baseDao.flush();
+        return ResultDto.success(entity);
+    }
    /* @Override
     public <T> ResultDto  findByParams(Params params) {
        List<T> list = baseDao.findByParams(params);
@@ -51,11 +53,6 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         return ResultDto.success(list);
     }
 
-    @Override
-    public <T> ResultDto insertByEntity(T entity) {
-        entity=(T)baseDao.insertByEntity(entity);
-        return ResultDto.success(entity);
-    }
 
     @Override
     public <T> ResultDto insertByList(T[] entitys) {

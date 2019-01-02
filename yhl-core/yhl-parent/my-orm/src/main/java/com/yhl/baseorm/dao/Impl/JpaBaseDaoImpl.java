@@ -29,6 +29,11 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         return (T) super.findOne(id);
     }
 
+    @Override
+    public <T> T insertByEntity(T entity) {
+        entityManager.persist(entity);
+        return entity;
+    }
    /* @Override
     public <T> List<T> findByParams(Params params) {
         String  jpql = ParamUtil.getHqlSelectStr(clazz);
@@ -73,11 +78,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      *和 hibernate 的 save 方法的不同之处: 若对象有 id,
      * 则不能执行 insert 操作, 而会抛出异常
      * *//*
-    @Override
-    public <T> T insertByEntity(T entity) {
-        entityManager.persist(entity);
-        return entity;
-    }
+
 
     @Override
     public <T> int insertByList(T[] entitys) {

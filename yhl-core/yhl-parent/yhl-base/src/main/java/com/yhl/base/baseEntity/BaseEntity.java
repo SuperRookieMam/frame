@@ -1,5 +1,7 @@
 package com.yhl.base.baseEntity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -30,7 +32,8 @@ import java.util.Date;
 public class BaseEntity<ID> implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "ID")
     private ID id;
 

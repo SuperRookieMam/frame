@@ -2,7 +2,6 @@ package com.yhl.base.baseService;
 
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.component.dto.ResultDto;
-import com.yhl.baseorm.component.constant.Params;
 
 import java.io.Serializable;
 
@@ -12,6 +11,11 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * 自定义接口
      * */
     public <T> ResultDto findById(ID id);
+    /**
+     * 根据一个实体插入
+     * */
+    public <T> ResultDto insertByEntity(T entity);
+
     /**
      * 根据参数自定义查询
      * *//*
@@ -32,11 +36,6 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1>  ResultDto  findBysql(String sql, Class<T1> clazz);
-    *//**
-     * 根据一个实体插入
-     * *//*
-    public <T> ResultDto insertByEntity(T entity);
-
     *//**
      * 批量插入
      * *//*
