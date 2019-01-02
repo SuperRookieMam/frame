@@ -34,6 +34,21 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         entityManager.persist(entity);
         return entity;
     }
+
+    @Override
+    public <T> int insertByList(T[] entitys) {
+        //分批保存相对于速度要块很多
+        int batchSize = entitys.length - 1;
+        for (int i = 0; i < entitys.length; i++) {
+            entityManager.persist(entitys[i]);
+            if (i % batchSize == 0) {
+                entityManager.flush();
+                entityManager.clear();
+            }
+        }
+        return batchSize;
+    }
+
    /* @Override
     public <T> List<T> findByParams(Params params) {
         String  jpql = ParamUtil.getHqlSelectStr(clazz);
@@ -80,19 +95,6 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * *//*
 
 
-    @Override
-    public <T> int insertByList(T[] entitys) {
-        //分批保存相对于速度要块很多
-        int batchSize = entitys.length;
-        for (int i = 0; i < entitys.length; i++) {
-            entityManager.persist(entitys);
-            if (i % batchSize == 0) {
-                entityManager.flush();
-                entityManager.clear();
-            }
-        }
-        return batchSize;
-    }
     *//**
      *总的来说: 类似于 hibernate Session 的 saveOrUpdate 方法.
      * 对象没有id，插入操作

@@ -24,6 +24,17 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     public<T> ResultDto insertByEntity(@RequestBody T entity){
         return  baseService.insertByEntity(entity);
     }
+
+   /**
+     * 批量插入
+     * */
+    @PostMapping("/insert/entitys")
+    @ResponseBody
+    public <T> ResultDto insertByList(@RequestBody T[] entitys){
+        return  baseService.insertByList(entitys);
+    }
+
+
     /**
      * 根据参数自定义查询
      * *//*
@@ -42,15 +53,6 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
         return  baseService.findPageByParams(params);
     }
 
-
-    *//**
-     * 批量插入
-     * *//*
-    @PostMapping("/insert/entitys")
-    @ResponseBody
-    public <T> ResultDto insertByList(@RequestBody T[] entitys){
-        return  baseService.insertByList(entitys);
-    }
 
     *//**
      * 根据实体跟新

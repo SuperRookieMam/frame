@@ -24,6 +24,12 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         baseDao.flush();
         return ResultDto.success(entity);
     }
+
+    @Override
+    public <T> ResultDto insertByList(T[] entitys) {
+        return ResultDto.success(baseDao.insertByList(entitys));
+    }
+
    /* @Override
     public <T> ResultDto  findByParams(Params params) {
        List<T> list = baseDao.findByParams(params);
@@ -54,10 +60,7 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
     }
 
 
-    @Override
-    public <T> ResultDto insertByList(T[] entitys) {
-        return ResultDto.success(baseDao.insertByList(entitys));
-    }
+
 
     @Override
     public <T> ResultDto updateByEntity(T entity) {

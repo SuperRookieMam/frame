@@ -22,6 +22,14 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * 根据一个实体插入
      * */
     public <T> T insertByEntity(T entity);
+
+
+    /**
+     * 批量插入
+     * */
+    public <T> int insertByList(T[] entitys);
+
+
   /*  *//**
      * 根据参数自定义查询
      * *//*
@@ -44,10 +52,6 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     public<T1>  List<T1>  findBysql(String sql, Class<T1> clazz);
     *//*
 
-    *//**
-     * 批量插入
-     * *//*
-    public <T> int insertByList(T[] entitys);
     *//**
      * 根据实体跟新
      * *//*

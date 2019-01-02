@@ -17,6 +17,12 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
     public <T> ResultDto insertByEntity(T entity);
 
     /**
+     * 批量插入
+     * */
+    public <T> ResultDto insertByList(T[] entitys);
+
+
+    /**
      * 根据参数自定义查询
      * *//*
     public <T> ResultDto findByParams(Params params);
@@ -36,10 +42,7 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1>  ResultDto  findBysql(String sql, Class<T1> clazz);
-    *//**
-     * 批量插入
-     * *//*
-    public <T> ResultDto insertByList(T[] entitys);
+
     *//**
      * 根据实体跟新
      * *//*
