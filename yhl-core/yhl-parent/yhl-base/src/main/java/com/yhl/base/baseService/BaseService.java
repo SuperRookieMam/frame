@@ -4,6 +4,7 @@ import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.component.dto.ResultDto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
 
@@ -19,9 +20,12 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
     /**
      * 批量插入
      * */
-    public <T> ResultDto insertByList(T[] entitys);
+    public <T> ResultDto insertByList(List<T>  entitys);
 
-
+    /**
+     * 根据实体跟新
+     * */
+    public<T> ResultDto updateByEntity(T entity);
     /**
      * 根据参数自定义查询
      * *//*
@@ -42,11 +46,6 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1>  ResultDto  findBysql(String sql, Class<T1> clazz);
-
-    *//**
-     * 根据实体跟新
-     * *//*
-    public<T> ResultDto updateByEntity(T entity);
     *//**
      *根据Hql跟新
      * *//*

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *继承勒JpaRepository的接口，findN那些所有方法，
@@ -23,11 +24,17 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * */
     public <T> T insertByEntity(T entity);
 
+    /**
+     * 根据实体跟新
+     * */
+    public<T> T updateByEntity(T entity);
+
+
 
     /**
      * 批量插入
      * */
-    public <T> int insertByList(T[] entitys);
+    public <T> int insertByList(List<T>  entitys);
 
 
   /*  *//**
@@ -50,12 +57,6 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1>  List<T1>  findBysql(String sql, Class<T1> clazz);
-    *//*
-
-    *//**
-     * 根据实体跟新
-     * *//*
-    public<T> T updateByEntity(T entity);
     *//**
      *根据Hql跟新
      * *//*

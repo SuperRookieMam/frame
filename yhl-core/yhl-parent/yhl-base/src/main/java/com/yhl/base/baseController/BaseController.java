@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
 
@@ -30,8 +31,17 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
      * */
     @PostMapping("/insert/entitys")
     @ResponseBody
-    public <T> ResultDto insertByList(@RequestBody T[] entitys){
+    public <T> ResultDto insertByList(@RequestBody List<T> entitys){
         return  baseService.insertByList(entitys);
+    }
+
+    /**
+     * 根据实体跟新
+     * */
+    @PostMapping("/update")
+    @ResponseBody
+    public<T> ResultDto updateByEntity(T entity){
+        return  baseService.updateByEntity(entity);
     }
 
 
@@ -51,16 +61,6 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     @ResponseBody
     public ResultDto findPageByParams(@RequestBody  Params params){
         return  baseService.findPageByParams(params);
-    }
-
-
-    *//**
-     * 根据实体跟新
-     * *//*
-    @PutMapping("/update")
-    @ResponseBody
-    public<T> ResultDto updateByEntity(T entity){
-        return  baseService.updateByEntity(entity);
     }
     @DeleteMapping("/delete")
     @ResponseBody

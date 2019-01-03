@@ -36,18 +36,24 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
 
     @Override
-    public <T> int insertByList(T[] entitys) {
+    public <T> int insertByList(List<T> entitys) {
         //分批保存相对于速度要块很多
-        int batchSize = entitys.length - 1;
-        for (int i = 0; i < entitys.length; i++) {
-            entityManager.persist(entitys[i]);
+        int batchSize = entitys.size() - 1;
+        for (int i = 0; i < entitys.size(); i++) {
+            entityManager.persist(entitys.get(i));
             if (i % batchSize == 0) {
                 entityManager.flush();
                 entityManager.clear();
             }
         }
-        return batchSize;
+        return batchSize +1;
     }
+
+    @Override
+    public <T> T updateByEntity(T entity) {
+         return entityManager.merge(entity);
+    }
+
 
    /* @Override
     public <T> List<T> findByParams(Params params) {
@@ -103,10 +109,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * 进行插入操作entityManager.merge(customer);
      * *//*
 
-    @Override
-    public <T> T updateByEntity(T entity) {
-        return entityManager.merge(entity);
-    }
+
 
     @Override
     public int updateByHql(String Hql) {

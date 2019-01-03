@@ -22,7 +22,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         basePackages = {"com.**.dao"},
-        entityManagerFactoryRef="entityManagerFactory",//注意这个名字不能乱取，妈的坑了我一天
+        entityManagerFactoryRef="jpaEntityManagerFactory",//注意这个名字不能乱取，妈的坑了我一天
         transactionManagerRef="transactionManagerPrimary",
         repositoryFactoryBeanClass = BaseDaoFactoryBean.class
 )//最后一个时dao包扫描什么包
@@ -37,7 +37,7 @@ public class JpaConfig {
 
 
 
-    @Bean(name = "entityManagerFactory")
+    @Bean(name = "jpaEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory () {
         HibernateJpaVendorAdapter jpaVendorAdapter=new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
@@ -65,10 +65,10 @@ public class JpaConfig {
         props.put("hibernate.ddl-auto", "update");*/
         //jpaProperties.getHibernateProperties(DataSource)
         Properties properties = new Properties();
-        properties.setProperty("spring.jpa.hibernate.ddl-auto", "update");
-        properties.setProperty("spring.jpa.hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.ddl-auto", "update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 //        //驼峰转下滑杠明明规则
-        properties.setProperty("spring.jpa.hibernate.naming.physical-strategy", "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
+        properties.setProperty("hibernate.naming.physical-strategy", "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
        /* properties.setProperty("base-package", "com.**.jpaDao");
         properties.setProperty("factory-class", BaseDaoFactoryBean.class.getName());
         properties.setProperty("entity-manager-factory-ref","localContainerEntityManagerFactoryBean");

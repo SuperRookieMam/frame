@@ -5,8 +5,10 @@ import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> implements BaseService<T, ID> {
     
@@ -26,9 +28,18 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
     }
 
     @Override
-    public <T> ResultDto insertByList(T[] entitys) {
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto insertByList(List<T>  entitys) {
         return ResultDto.success(baseDao.insertByList(entitys));
     }
+
+    @Override
+    public <T> ResultDto updateByEntity(T entity) {
+        entity = (T) baseDao.updateByEntity(entity);
+        baseDao.flush();
+        return ResultDto.success(entity) ;
+    }
+
 
    /* @Override
     public <T> ResultDto  findByParams(Params params) {
@@ -57,15 +68,6 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
     public <T1> ResultDto findBysql(String sql, Class<T1> clazz) {
         List<T1> list =baseDao.findBysql(sql,clazz);
         return ResultDto.success(list);
-    }
-
-
-
-
-    @Override
-    public <T> ResultDto updateByEntity(T entity) {
-       entity = (T) baseDao.updateByEntity(entity);
-        return ResultDto.success(entity) ;
     }
 
     @Override
