@@ -10,8 +10,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "my_test_entity1")
 public class MyTestEntity1 extends BaseEntity<String>  implements Serializable{
-    private static final long serialVersionUID = 1L;
- @Column(name = "name")
+
+    private static final long serialVersionUID = 3307967707125140056L;
+    @Column(name = "name")
  private String name;
 
     public String getName() {

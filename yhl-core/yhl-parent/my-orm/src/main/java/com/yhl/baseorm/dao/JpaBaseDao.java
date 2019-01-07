@@ -1,6 +1,7 @@
 package com.yhl.baseorm.dao;
 
 
+import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -23,20 +24,22 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * 根据一个实体插入
      * */
     public <T> T insertByEntity(T entity);
-
-    /**
-     * 根据实体跟新
-     * */
-    public<T> T updateByEntity(T entity);
-
-
-
     /**
      * 批量插入
      * */
     public <T> int insertByList(List<T>  entitys);
+    /**
+     * 根据实体跟新
+     * */
+    public<T> T updateByUpdateParam(UpdateParam updateParams);
 
 
+    /**
+     * 根据实体跟新
+     * @param  updateParams 要跟新的字段值
+     * @param  flushSize 多少条刷新一次
+     * */
+    public<T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize);
   /*  *//**
      * 根据参数自定义查询
      * *//*

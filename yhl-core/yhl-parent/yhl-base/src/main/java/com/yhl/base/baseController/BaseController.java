@@ -3,6 +3,7 @@ package com.yhl.base.baseController;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,11 +41,18 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
      * */
     @PostMapping("/update")
     @ResponseBody
-    public<T> ResultDto updateByEntity(T entity){
-        return  baseService.updateByEntity(entity);
+    public<T> ResultDto updateByUpdateParam(@RequestBody UpdateParam updateParams){
+        return  baseService.updateByUpdateParam(updateParams);
     }
 
-
+    /**
+     * 根据实体跟新
+     * */
+    @PostMapping("/updates")
+    @ResponseBody
+    public<T> ResultDto updateByUpdateParams(@RequestBody UpdateParam[] updateParams){
+        return  baseService.updateByUpdateParams(updateParams,1000);
+    }
     /**
      * 根据参数自定义查询
      * *//*

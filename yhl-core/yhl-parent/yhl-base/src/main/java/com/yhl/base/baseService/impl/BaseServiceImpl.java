@@ -4,6 +4,7 @@ import com.yhl.base.baseDao.BaseDao;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,12 +35,17 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
     }
 
     @Override
-    public <T> ResultDto updateByEntity(T entity) {
-        entity = (T) baseDao.updateByEntity(entity);
-        baseDao.flush();
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto updateByUpdateParam(UpdateParam updateParams) {
+        T entity = (T) baseDao.updateByUpdateParam(updateParams);
         return ResultDto.success(entity) ;
     }
-
+    @Override
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto updateByUpdateParams(UpdateParam[] updateParams,int flusSize) {
+        int number =  baseDao.updateByUpdateParams(updateParams,flusSize);
+        return ResultDto.success(number) ;
+    }
 
    /* @Override
     public <T> ResultDto  findByParams(Params params) {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class MyClassUtil<T> {
@@ -100,5 +102,29 @@ public class MyClassUtil<T> {
         Class clazz =  getClassForName(className);
         superClazz=  clazz.getSuperclass();
         return  superClazz;
+    }
+
+    /**
+     * 获取包括父类的所有字段,如果父类有重名的则返回的子类的字段名字
+     * @param clazz 要获取字段的类
+     * @return  Map<字段名,Field>
+     * */
+    public static Map<String,Field> getAllFields(Class clazz){
+        Class superClass =clazz.getSuperclass();
+        Map<String,Field> map =new HashMap<>();
+        boolean flag =superClass!=null;
+        while (flag){
+            Field[] fields =superClass.getDeclaredFields();
+            for (int i = 0; i <fields.length ; i++) {
+                map.put(fields[i].getName(),fields[i]);
+            }
+            superClass =superClass.getSuperclass();
+            flag =superClass!=null;
+        }
+        Field[] fields = clazz.getDeclaredFields();
+        for (int i = 0; i <fields.length ; i++) {
+            map.put(fields[i].getName(),fields[i]);
+        }
+        return map;
     }
 }

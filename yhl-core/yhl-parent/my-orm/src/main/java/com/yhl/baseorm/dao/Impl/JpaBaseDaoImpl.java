@@ -1,16 +1,16 @@
 package com.yhl.baseorm.dao.Impl;
 
 
-import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.Params;
-import com.yhl.baseorm.component.util.ParamUtil;
+import com.yhl.baseorm.component.constant.UpdateParam;
+import com.yhl.baseorm.component.util.MyClassUtil;
 import com.yhl.baseorm.dao.JpaBaseDao;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 //@NoRepositoryBean ：启动时不初始化该实体类。是spring date jpa的一种注解
 public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaRepository<T,ID > implements JpaBaseDao<T,ID> {
@@ -50,11 +50,27 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
 
     @Override
-    public <T> T updateByEntity(T entity) {
-         return entityManager.merge(entity);
+    public <T> T updateByUpdateParam(UpdateParam updateParams) {
+      T entity =(T)  entityManager.find(clazz,updateParams.get("id"));
+        entity = UpdateParam.copyPropertis(entity,updateParams,entityManager);
+        return entityManager.merge(entity);
     }
 
 
+    @Override
+    public <T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize) {
+        Map<String, Field> map = MyClassUtil.getAllFields(clazz);
+        for (int i = 0; i < updateParams.length; i++) {
+            T entity =(T)  entityManager.find(clazz,updateParams[i].get("id"));
+            entity = UpdateParam.copyPropertis(entity,updateParams[i],entityManager,map);
+            entityManager.merge(entity);
+            if (i%flushSize==0){
+                entityManager.flush();
+                entityManager.clear();
+            }
+        }
+        return updateParams.length;
+    }
    /* @Override
     public <T> List<T> findByParams(Params params) {
         String  jpql = ParamUtil.getHqlSelectStr(clazz);

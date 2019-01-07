@@ -2,6 +2,7 @@ package com.yhl.base.baseService;
 
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.UpdateParam;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,7 +26,11 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
     /**
      * 根据实体跟新
      * */
-    public<T> ResultDto updateByEntity(T entity);
+    public<T> ResultDto updateByUpdateParam(UpdateParam updateParams);
+    /**
+     * 根据实体跟新
+     * */
+    public<T> ResultDto updateByUpdateParams(UpdateParam[] updateParams,int flusSize);
     /**
      * 根据参数自定义查询
      * *//*
