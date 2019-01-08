@@ -4,6 +4,8 @@ import com.yhl.base.baseDao.BaseDao;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.PageInfo;
+import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,23 +49,24 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         return ResultDto.success(number) ;
     }
 
-   /* @Override
-    public <T> ResultDto  findByParams(Params params) {
-       List<T> list = baseDao.findByParams(params);
+    @Override
+    public <T> ResultDto  findByParams(SelecteParam selecteParam) {
+       List<T> list = baseDao.findByParams(selecteParam);
         return ResultDto.success(list);
     }
 
     @Override
-    public ResultDto findCountByParams(Params params) {
-        return ResultDto.success(baseDao.findCountByParams(params));
+    public ResultDto findCountByParams(SelecteParam selecteParam) {
+        return ResultDto.success(baseDao.findCountByParams(selecteParam));
     }
 
     @Override
-    public <T> ResultDto findPageByParams(Params params) {
-        PageInfo pageInfo=baseDao.findPageByParams(params);
+    public <T> ResultDto findPageByParams(SelecteParam selecteParam) {
+        PageInfo pageInfo=baseDao.findPageByParams(selecteParam);
         return ResultDto.success(pageInfo);
     }
 
+    /*
     @Override
     public <T1> ResultDto findByHql(String hql, Class<T1> clazz) {
         List<T1> list= baseDao. findBysql(hql,clazz);

@@ -1,9 +1,16 @@
 package com.yhl.baseorm.dao.Impl;
 
 
+import com.yhl.baseorm.component.constant.Condtion;
+import com.yhl.baseorm.component.constant.PageInfo;
+import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 import com.yhl.baseorm.component.util.MyClassUtil;
 import com.yhl.baseorm.dao.JpaBaseDao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
@@ -23,18 +30,24 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         this.entityManager = entityManager;
         clazz =modelClass;
     }
-
+    /**
+     * 根据id查询
+     * */
     @Override
     public <T> T findById(ID id) {
         return (T) super.findOne(id);
     }
-
+    /**
+     * 单个插入
+     * */
     @Override
     public <T> T insertByEntity(T entity) {
         entityManager.persist(entity);
         return entity;
     }
-
+    /**
+     * 批量插入
+     * */
     @Override
     public <T> int insertByList(List<T> entitys) {
         //分批保存相对于速度要块很多
@@ -48,7 +61,9 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         }
         return batchSize +1;
     }
-
+    /**
+     * 单个跟新
+     * */
     @Override
     public <T> T updateByUpdateParam(UpdateParam updateParams) {
       T entity =(T)  entityManager.find(clazz,updateParams.get("id"));
@@ -56,7 +71,9 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         return entityManager.merge(entity);
     }
 
-
+    /**
+     * 批量跟新
+     * */
     @Override
     public <T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize) {
         Map<String, Field> map = MyClassUtil.getAllFields(clazz);
@@ -71,36 +88,45 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         }
         return updateParams.length;
     }
-   /* @Override
-    public <T> List<T> findByParams(Params params) {
-        String  jpql = ParamUtil.getHqlSelectStr(clazz);
-        jpql += ParamUtil.parseParamToHql(params);
-        TypedQuery typedQuery = entityManager.createQuery(jpql,clazz);
-        List<T> list=typedQuery.getResultList();
+    @Override
+    public <T> List<T> findByParams(SelecteParam selecteParam) {
+        Specification condtion = new Condtion<T>(selecteParam);
+         Sort sort = selecteParam.getToSort();
+         List<T> list =null;
+            if (sort==null){
+                list =super.findAll(condtion);
+            }else {
+                list =super.findAll(condtion,sort);
+            }
         return list;
     }
 
     @Override
-    public int findCountByParams(Params params) {
-        String  jpql =ParamUtil.getHqlSelectCountStr(clazz);
-        jpql +=ParamUtil.parseParamToHql(params);
-        return (int)entityManager.createQuery(jpql).getSingleResult();
+    public long findCountByParams(SelecteParam selecteParam) {
+        Specification condtion = new Condtion<T>(selecteParam);
+        return super.count(condtion);
     }
 
     @Override
-    public <T> PageInfo<T> findPageByParams(Params params) {
+    public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam) {
+        Specification condtion = new Condtion<T>(selecteParam);
+        PageRequest pageRequest = new PageRequest(selecteParam.getPageNum() - 1, selecteParam.getPageSize(),selecteParam.getToSort());
+        Page page = findAll(condtion, pageRequest);
         PageInfo<T> pageInfo=new PageInfo<>();
-        pageInfo.setPageNum(params.getPageNum());
-        pageInfo.setPageSize(params.getPageSize());;
-        pageInfo.setStartRow(params.getPageNum()*params.getPageSize());
-        pageInfo.setEndRow(params.getPageNum()*params.getPageSize()+params.getPageSize());
-        pageInfo.setList(findByParams(params));
-        pageInfo.setTotal(findCountByParams(params));
-        pageInfo.setOrderBy(params.getSort().toString());
+        pageInfo.setPageNum(selecteParam.getPageNum());
+        pageInfo.setPageSize(selecteParam.getPageSize());
+        pageInfo.setStartRow(selecteParam.getPageNum()*selecteParam.getPageSize());
+        pageInfo.setEndRow(selecteParam.getPageNum()*selecteParam.getPageSize()+selecteParam.getPageSize());
         pageInfo.setPages((int) pageInfo.getTotal()/(pageInfo.getPageSize()==0?1:pageInfo.getPageSize()));
+        pageInfo.setList(page.getContent());
+        pageInfo.setTotal(page.getTotalElements());
+        pageInfo.setOrderBy(page.getSort().toString());
         return pageInfo;
     }
 
+
+
+    /*
     @Override
     public<T1> List<T1>  findByHql(String hql,Class<T1> clazz){
         return entityManager.createQuery(hql,clazz).getResultList();

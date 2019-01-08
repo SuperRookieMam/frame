@@ -3,6 +3,7 @@ package com.yhl.base.baseController;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,22 +56,22 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     }
     /**
      * 根据参数自定义查询
-     * *//*
+     * */
     @GetMapping("/list")
     @ResponseBody
-    public ResultDto findByParams(@RequestBody Params params){
-        return  baseService.findByParams(params);
+    public ResultDto findByParams(@RequestParam(name = "selecteParam",required=false)  SelecteParam selecteParam){
+        return  baseService.findByParams(selecteParam);
     }
 
-    *//**
+    /**
      * 分页查询
-     * *//*
+     * */
     @GetMapping("/pageInfo")
     @ResponseBody
-    public ResultDto findPageByParams(@RequestBody  Params params){
-        return  baseService.findPageByParams(params);
+    public ResultDto findPageByParams(@RequestParam(name = "selecteParam",required=false) SelecteParam selecteParam){
+        return  baseService.findPageByParams(selecteParam);
     }
-    @DeleteMapping("/delete")
+  /*  @DeleteMapping("/delete")
     @ResponseBody
     public<T> ResultDto deleteByEntity(@RequestBody  T entity){
         baseService.deleteByEntity(entity);

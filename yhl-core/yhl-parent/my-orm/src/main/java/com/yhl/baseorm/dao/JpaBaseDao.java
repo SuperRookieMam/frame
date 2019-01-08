@@ -1,6 +1,8 @@
 package com.yhl.baseorm.dao;
 
 
+import com.yhl.baseorm.component.constant.PageInfo;
+import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,6 +22,12 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * 自定义接口
      * */
     public <T> T findById(ID id);
+
+    /**
+     * 根据参数自定义查询
+     * */
+    public <T> List<T> findByParams(SelecteParam selecteParam);
+
     /**
      * 根据一个实体插入
      * */
@@ -40,15 +48,17 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * @param  flushSize 多少条刷新一次
      * */
     public<T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize);
-  /*  *//**
-     * 根据参数自定义查询
-     * *//*
-    public <T> List<T> findByParams(Params params);
-    *//**
+    /**
      * 根据条件查询条数
-     * *//*
-    public int findCountByParams(Params params);
-    *//**
+     * */
+    public long findCountByParams(SelecteParam selecteParam);
+
+
+    public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam);
+
+
+
+    /**
      * 分页查询
      * *//*
     public <T> PageInfo<T> findPageByParams(Params params);

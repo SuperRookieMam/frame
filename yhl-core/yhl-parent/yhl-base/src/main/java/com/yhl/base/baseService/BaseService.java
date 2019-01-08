@@ -2,6 +2,7 @@ package com.yhl.base.baseService;
 
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 
 import java.io.Serializable;
@@ -31,19 +32,21 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * 根据实体跟新
      * */
     public<T> ResultDto updateByUpdateParams(UpdateParam[] updateParams,int flusSize);
+
+
     /**
      * 根据参数自定义查询
-     * *//*
-    public <T> ResultDto findByParams(Params params);
-    *//**
+     * */
+    public <T> ResultDto findByParams(SelecteParam selecteParam);
+    /**
      * 根据条件查询条数
-     * *//*
-    public ResultDto findCountByParams(Params params);
-    *//**
+     * */
+    public ResultDto findCountByParams(SelecteParam selecteParam);
+    /**
      * 分页查询
-     * *//*
-    public <T> ResultDto findPageByParams(Params params);
-    *//**
+     * */
+    public <T> ResultDto findPageByParams(SelecteParam selecteParam);
+    /**
      *接受类型不顶 ，但是又不能用泛型，到时强转吧
      * *//*
     public<T1> ResultDto findByHql(String hql, Class<T1> clazz);
