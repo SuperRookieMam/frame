@@ -1,5 +1,6 @@
 package com.yhl.baseorm.component.constant;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.jpa.domain.Specification;
@@ -159,7 +160,7 @@ public class Condtion<T> implements Specification <T>  {
                          LocalDateTime dateTime = LocalDateTime.parse(entry.getValue().toString(), formatter);
                          predicate = criteriaBuilder.equal(entry.getKey(),dateTime);
                      }else {
-                         predicate= criteriaBuilder.equal(entry.getKey(),new BigDecimal(entry.getValue().toString()));
+                         predicate= criteriaBuilder.equal(entry.getKey(),entry.getValue());
                      }
                      list.add(predicate);
                  }
@@ -173,7 +174,7 @@ public class Condtion<T> implements Specification <T>  {
                          LocalDateTime dateTime = LocalDateTime.parse(entry.getValue().toString(), formatter);
                          predicate = criteriaBuilder.notEqual(entry.getKey(),dateTime);
                      }else {
-                         predicate= criteriaBuilder.notEqual(entry.getKey(),new BigDecimal(entry.getValue().toString()));
+                         predicate= criteriaBuilder.notEqual(entry.getKey(),entry.getValue());
                      }
                      list.add(predicate);
                  }

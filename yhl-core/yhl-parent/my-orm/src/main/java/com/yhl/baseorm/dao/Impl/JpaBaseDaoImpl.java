@@ -90,6 +90,9 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
     @Override
     public <T> List<T> findByParams(SelecteParam selecteParam) {
+        if (selecteParam==null){
+            return (List<T>)super.findAll();
+        }
         Specification condtion = new Condtion<T>(selecteParam);
          Sort sort = selecteParam.getToSort();
          List<T> list =null;
@@ -103,6 +106,9 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
 
     @Override
     public long findCountByParams(SelecteParam selecteParam) {
+        if (selecteParam==null){
+            return super.count();
+        }
         Specification condtion = new Condtion<T>(selecteParam);
         return super.count(condtion);
     }

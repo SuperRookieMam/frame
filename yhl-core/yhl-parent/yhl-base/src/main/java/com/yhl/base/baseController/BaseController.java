@@ -59,7 +59,7 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
      * */
     @GetMapping("/list")
     @ResponseBody
-    public ResultDto findByParams(@RequestParam(name = "selecteParam",required=false)  SelecteParam selecteParam){
+    public ResultDto findByParams(@RequestBody  SelecteParam selecteParam){
         return  baseService.findByParams(selecteParam);
     }
 
@@ -68,7 +68,7 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
      * */
     @GetMapping("/pageInfo")
     @ResponseBody
-    public ResultDto findPageByParams(@RequestParam(name = "selecteParam",required=false) SelecteParam selecteParam){
+    public ResultDto findPageByParams(@RequestBody SelecteParam selecteParam){
         return  baseService.findPageByParams(selecteParam);
     }
   /*  @DeleteMapping("/delete")
