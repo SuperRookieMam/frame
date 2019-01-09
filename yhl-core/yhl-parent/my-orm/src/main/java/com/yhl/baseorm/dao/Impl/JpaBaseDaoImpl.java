@@ -88,6 +88,25 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         }
         return updateParams.length;
     }
+    /**
+     * 根据条件跟新某个字段，但不是联表跟新，
+     * */
+    @Override
+    public <T> int updateByselecteParam (UpdateParam updateParam,SelecteParam selecteParam,int flushSize) {
+        Map<String, Field> map = MyClassUtil.getAllFields(clazz);
+        List<T> list =findByParams(selecteParam);
+        for (int i = 0; i < list.size(); i++) {
+            T entity = list.get(i);
+            entity = UpdateParam.copyPropertis(entity,updateParam,entityManager,map);
+            entityManager.merge(entity);
+            if (i%flushSize==0){
+                entityManager.flush();
+                entityManager.clear();
+            }
+        }
+        return list.size();
+    }
+
     @Override
     public <T> List<T> findByParams(SelecteParam selecteParam) {
         if (selecteParam==null){
@@ -121,65 +140,33 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         PageInfo<T> pageInfo=new PageInfo<>();
         pageInfo.setPageNum(selecteParam.getPageNum());
         pageInfo.setPageSize(selecteParam.getPageSize());
-        pageInfo.setStartRow(selecteParam.getPageNum()*selecteParam.getPageSize());
-        pageInfo.setEndRow(selecteParam.getPageNum()*selecteParam.getPageSize()+selecteParam.getPageSize());
+        pageInfo.setStartRow((selecteParam.getPageNum()-1)*selecteParam.getPageSize());
+        pageInfo.setEndRow((selecteParam.getPageNum()-1)*selecteParam.getPageSize()+selecteParam.getPageSize());
         pageInfo.setPages((int) pageInfo.getTotal()/(pageInfo.getPageSize()==0?1:pageInfo.getPageSize()));
         pageInfo.setList(page.getContent());
         pageInfo.setTotal(page.getTotalElements());
         pageInfo.setOrderBy(page.getSort().toString());
         return pageInfo;
     }
-
-
-
-    /*
-    @Override
-    public<T1> List<T1>  findByHql(String hql,Class<T1> clazz){
-        return entityManager.createQuery(hql,clazz).getResultList();
-    }
-
-    @Override
-    public<T1>  List<T1>  findBysql(String sql,Class<T1> clazz) {
-        return entityManager.createNativeQuery(sql,clazz).getResultList();
-    }
-    *//**
+    /**
      * 类似于 hibernate 的 save 方法. 使对象由临时状态变为持久化状态.
      *和 hibernate 的 save 方法的不同之处: 若对象有 id,
      * 则不能执行 insert 操作, 而会抛出异常
-     * *//*
-
-
-    *//**
+     *
      *总的来说: 类似于 hibernate Session 的 saveOrUpdate 方法.
      * 对象没有id，插入操作
      * 对象有id，且和数据库中有对应的id，修改操作
      * 对象有id，但数据库中找不到对应的id，则抛弃id
      * 进行插入操作entityManager.merge(customer);
-     * *//*
-
-
-
+     * */
     @Override
-    public int updateByHql(String Hql) {
-        return entityManager.createQuery(Hql).executeUpdate();
+    public void deleteById(ID id) {
+       super.delete(id);
     }
-
     @Override
-    public int updateBysql(String sql) {
-        return entityManager.createNativeQuery(sql).executeUpdate();
+    public int deleteBySelectParam(SelecteParam selecteParam) {
+        List<T> list = this.findByParams(selecteParam);
+        super.delete(list);
+        return list.size();
     }
-
-    @Override
-    public<T> void deleteByEntity(T entity) {
-        entityManager.remove(entity);
-    }
-
-    @Override
-    public int deleteByIds(ID[] ids,String IdName) {
-        if (ids==null||ids.length==0){
-            return 0;
-        }
-        String jpql =ParamUtil.getHqlDeleteStr(clazz,IdName,ids);
-        return entityManager.createQuery(jpql).executeUpdate();
-    }*/
 }

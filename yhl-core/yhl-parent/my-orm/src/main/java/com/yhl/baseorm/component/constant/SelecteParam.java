@@ -29,8 +29,8 @@ public class SelecteParam  implements Serializable {
     *  ge:{}大于等于
     *  eq:{}等于
     *  notEq:{}不等于
-    *  in:{}
-    *  notIn:{}
+    *  in:{"字段名":[]}
+    *  notIn:[]
     *  null:{}
     *  not null:{}
     *  }

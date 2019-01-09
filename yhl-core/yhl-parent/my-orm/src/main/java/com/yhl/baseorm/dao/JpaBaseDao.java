@@ -23,6 +23,8 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * */
     public <T> T findById(ID id);
 
+    public <T> int updateByselecteParam(UpdateParam updateParams, SelecteParam selecteParam, int flushSize);
+
     /**
      * 根据参数自定义查询
      * */
@@ -57,32 +59,9 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam);
 
 
+    public void deleteById(ID id);
 
-    /**
-     * 分页查询
-     * *//*
-    public <T> PageInfo<T> findPageByParams(Params params);
-    *//**
-     *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * *//*
-    public<T1> List<T1> findByHql(String hql, Class<T1> clazz);
-    *//**
-     *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * *//*
-    public<T1>  List<T1>  findBysql(String sql, Class<T1> clazz);
-    *//**
-     *根据Hql跟新
-     * *//*
-    public int updateByHql(String Hql);
-
-    *//**
-     *根据sql跟新
-     * *//*
-    public int updateBysql(String sql);
-
-    public<T> void deleteByEntity(T entity);
-
-    public int deleteByIds(ID[] ids, String IdName);*/
+    public int deleteBySelectParam(SelecteParam selecteParam);
 
     /**
      * JpaRepository的接口

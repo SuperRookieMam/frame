@@ -48,7 +48,12 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         int number =  baseDao.updateByUpdateParams(updateParams,flusSize);
         return ResultDto.success(number) ;
     }
-
+    @Override
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto updateByselecteParam(UpdateParam updateParams, SelecteParam selecteParam, int flushSize){
+        int number =  baseDao.updateByselecteParam( updateParams,selecteParam, flushSize);
+        return ResultDto.success(number) ;
+    }
     @Override
     public <T> ResultDto  findByParams(SelecteParam selecteParam) {
        List<T> list = baseDao.findByParams(selecteParam);
@@ -66,37 +71,16 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         return ResultDto.success(pageInfo);
     }
 
-    /*
     @Override
-    public <T1> ResultDto findByHql(String hql, Class<T1> clazz) {
-        List<T1> list= baseDao. findBysql(hql,clazz);
-        return ResultDto.success(list);
+    @Transactional(value ="transactionManagerPrimary")
+    public ResultDto deleteById(ID id) {
+        baseDao.deleteById(id);
+        return ResultDto.success(null);
     }
 
     @Override
-    public <T1> ResultDto findBysql(String sql, Class<T1> clazz) {
-        List<T1> list =baseDao.findBysql(sql,clazz);
-        return ResultDto.success(list);
+    @Transactional(value ="transactionManagerPrimary")
+    public ResultDto deleteBySelectParam(SelecteParam selecteParam) {
+        return ResultDto.success(baseDao.deleteBySelectParam(selecteParam));
     }
-
-    @Override
-    public ResultDto updateByHql(String hql) {
-        return ResultDto.success(baseDao.updateByHql(hql));
-    }
-
-    @Override
-    public ResultDto updateBysql(String sql) {
-        return ResultDto.success(baseDao.updateBysql(sql));
-    }
-
-    @Override
-    public<T> ResultDto deleteByEntity(T entity) {
-        baseDao.deleteByEntity(entity);
-        return  ResultDto.success(null);
-    }
-
-    @Override
-    public ResultDto deleteByIds(ID[] ids) {
-        return ResultDto.success(baseDao.deleteByIds(ids,"id"));
-    }
-*/}
+}

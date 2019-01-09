@@ -3,6 +3,7 @@ package com.yhl.base.baseController;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.FreeParam;
 import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.UpdateParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,14 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
         return  baseService.updateByUpdateParams(updateParams,1000);
     }
     /**
+     * 根据实体跟新
+     * */
+    @PostMapping("/freeUpdate")
+    @ResponseBody
+    public<T> ResultDto updateByFree(@RequestBody FreeParam freeParam){
+        return  baseService.updateByselecteParam(freeParam.getUpdateParam(),freeParam.getSelecteParam(),1000);
+    }
+    /**
      * 根据参数自定义查询
      * */
     @GetMapping("/list")
@@ -71,16 +80,16 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     public ResultDto findPageByParams(@RequestBody SelecteParam selecteParam){
         return  baseService.findPageByParams(selecteParam);
     }
-  /*  @DeleteMapping("/delete")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public<T> ResultDto deleteByEntity(@RequestBody  T entity){
-        baseService.deleteByEntity(entity);
-      return   ResultDto.success(null);
+    public<T> ResultDto deleteByEntity(@PathVariable  ID id){
+
+      return   baseService.deleteById(id);
     }
-    @DeleteMapping("/delete/ids")
+    @PostMapping("/delete/params")
     @ResponseBody
-    public ResultDto deleteByIds(ID[] ids){
-        return  ResultDto.success(baseService.deleteByIds(ids));
+    public ResultDto deleteByParams(@RequestBody SelecteParam selecteParam){
+        return  baseService.deleteBySelectParam(selecteParam);
     }
-*/
+
 }

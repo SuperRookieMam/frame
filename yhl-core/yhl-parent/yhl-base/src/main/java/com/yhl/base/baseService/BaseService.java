@@ -33,7 +33,7 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * */
     public<T> ResultDto updateByUpdateParams(UpdateParam[] updateParams,int flusSize);
 
-
+    public <T> ResultDto updateByselecteParam(UpdateParam updateParams, SelecteParam selecteParam, int flushSize);
     /**
      * 根据参数自定义查询
      * */
@@ -46,24 +46,8 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * 分页查询
      * */
     public <T> ResultDto findPageByParams(SelecteParam selecteParam);
-    /**
-     *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * *//*
-    public<T1> ResultDto findByHql(String hql, Class<T1> clazz);
-    *//**
-     *接受类型不顶 ，但是又不能用泛型，到时强转吧
-     * *//*
-    public<T1>  ResultDto  findBysql(String sql, Class<T1> clazz);
-    *//**
-     *根据Hql跟新
-     * *//*
-    public ResultDto updateByHql(String Hql);
-    *//**
-     *根据sql跟新
-     * *//*
-    public ResultDto updateBysql(String sql);
 
-    public<T> ResultDto deleteByEntity(T entity);
+    public ResultDto deleteById(ID id);
 
-    public ResultDto deleteByIds(ID[] ids);*/
+    public ResultDto deleteBySelectParam(SelecteParam selecteParam);
 }
