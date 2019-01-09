@@ -161,7 +161,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * */
     @Override
     public void deleteById(ID id) {
-       super.delete(id);
+        super.delete(id);
     }
     @Override
     public int deleteBySelectParam(SelecteParam selecteParam) {

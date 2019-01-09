@@ -47,6 +47,7 @@
         <spring-boot-start.version>1.5.15.RELEASE</spring-boot-start.version>
         <spring-boot-start-web.version>1.5.15.RELEASE</spring-boot-start-web.version>
         <spring-data-jpa.version>1.5.15.RELEASE</spring-data-jpa.version>
+        <log4j.version>2.11.1</log4j.version>
     </properties>
     <dependencyManagement>
 
@@ -119,6 +120,7 @@
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
+
             <!-- Apache Commons Lang -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -158,7 +160,17 @@
                 <artifactId>java-jwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
-
+            <!--log4j-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
