@@ -19,6 +19,7 @@
         <module>my-orm</module>
         <module>yhl-base</module>
         <module>yhl-test</module>
+        <module>yhl-oauth2</module>
     </modules>
 
     <dependencies>
