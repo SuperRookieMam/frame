@@ -1,0 +1,35 @@
+# md语法<br>
+######md语法直接兼容html标签 可以直接用html语法吧，啦啦啦～
+
+标题：几个 # 就是几级标题，最小到六级
+链接：[淘宝网](http://www.taobao.com/)
+图片：![图片标题](http://shuju.taobao.ali.com/images/web/tsj_main_dirc_img.png)
+斜体：*斜体,[这是斜体链接](http://www.taobao.com)*
+颜色：这是<label style="color:red">红色</label>字体
+为自体加粗：**加粗**字体
+Email： Email:<yabing.zyb@alibaba-inc.com>
+无序排列：* list1
+		* list2
+		* list3
+有序排列：1. list1
+		2. list2
+		3. list3
+分割线： *** 、---、- - - -	三种都一样	  
+内容框：在上一行内容缩进的基础上再缩进四个空格
+换行：需要换行<br>这是换行后的下一行
+中划线：~~中划线~~
+添加脚注：这是脚注[^1]
+		  [^1]: 这是脚注说明，会在文章的末尾显示.
+表格：默认表格：
+		First Header | Second Header | Third Header
+		------------ | ------------- | ------------
+		Content Cell | Content Cell  | Content Cell
+		Content Cell | Content Cell  | Content Cell
+		左右浮动表格：
+		First Header | Second Header | Third Header
+		:----------- | :-----------: | -----------:
+		Left         | Center        | Right
+		Left         | Center        | Right
+内容块：> 这里的内容在内容块中		
+		
+		
