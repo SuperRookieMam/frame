@@ -14,8 +14,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 /**
  * 一个此类初始化一个filter链条
  * */
-@Configuration
-@EnableWebSecurity
+/*@Configuration
+@EnableWebSecurity*/
 public class MySecurityConfig  extends WebSecurityConfigurerAdapter{
 
 
