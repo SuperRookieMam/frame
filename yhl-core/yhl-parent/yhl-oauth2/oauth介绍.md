@@ -53,17 +53,7 @@
     如果你是通过XML来进行配置的话，那么可以使用 <authorization-server/> 标签来进行配置。
      
     （译者注：想想现在国内各大平台的社会化登陆服务，例如腾讯，用户要使用QQ登录到某个网站，这个网站是跳转到了腾讯的登陆授权页面，然后用户登录并且确定授权之后跳转回目标网站，这种授权方式规范在我上面提供的链接*RFC6749*的第4.1节有详细阐述。）
-     
-    配置客户端详情信息（Client Details)：
-    ClientDetailsServiceConfigurer (AuthorizationServerConfigurer 的一个回调配置项，见上的概述) 能够使用内存或者JDBC来实现客户端详情服务（ClientDetailsService），有几个重要的属性如下列表：
-    clientId：（必须的）用来标识客户的Id。
-    secret：（需要值得信任的客户端）客户端安全码，如果有的话。
-    scope：用来限制客户端的访问范围，如果为空（默认）的话，那么客户端拥有全部的访问范围。
-    authorizedGrantTypes：此客户端可以使用的授权类型，默认为空。
-    authorities：此客户端可以使用的权限（基于Spring Security authorities）。
-     
-    客户端详情（Client Details）能够在应用程序运行的时候进行更新，可以通过访问底层的存储服务（例如将客户端详情存储在一个关系数据库的表中，就可以使用 JdbcClientDetailsService）或者通过 ClientDetailsManager 接口（同时你也可以实现 ClientDetailsService 接口）来进行管理。
-    （译者注：不过我并没有找到 ClientDetailsManager 这个接口文件，只找到了 ClientDetailsService）
+    
      
     管理令牌（Managing Token）：
     AuthorizationServerTokenServices 接口定义了一些操作使得你可以对令牌进行一些必要的管理，在使用这些操作的时候请注意以下几点：
@@ -82,13 +72,7 @@
     如果你要使用 JwtTokenStore，请务必把"spring-security-jwt"这个依赖加入到你的classpath中。
      
      
-    配置授权类型（Grant Types）：
-    授权是使用 AuthorizationEndpoint 这个端点来进行控制的，你能够使用 AuthorizationServerEndpointsConfigurer 这个对象的实例来进行配置(AuthorizationServerConfigurer 的一个回调配置项，见上的概述) ，如果你不进行设置的话，默认是除了资源所有者密码（password）授权类型以外，支持其余所有标准授权类型的（RFC6749），我们来看一下这个配置对象有哪些属性可以设置吧，如下列表：
-    authenticationManager：认证管理器，当你选择了资源所有者密码（password）授权类型的时候，请设置这个属性注入一个 AuthenticationManager 对象。
-    userDetailsService：如果啊，你设置了这个属性的话，那说明你有一个自己的 UserDetailsService 接口的实现，或者你可以把这个东西设置到全局域上面去（例如 GlobalAuthenticationManagerConfigurer 这个配置对象），当你设置了这个之后，那么 "refresh_token" 即刷新令牌授权类型模式的流程中就会包含一个检查，用来确保这个账号是否仍然有效，假如说你禁用了这个账户的话。
-    authorizationCodeServices：这个属性是用来设置授权码服务的（即 AuthorizationCodeServices 的实例对象），主要用于 "authorization_code" 授权码类型模式。
-    implicitGrantService：这个属性用于设置隐式授权模式，用来管理隐式授权模式的状态。
-    tokenGranter：这个属性就很牛B了，当你设置了这个东西（即 TokenGranter 接口实现），那么授权将会交由你来完全掌控，并且会忽略掉上面的这几个属性，这个属性一般是用作拓展用途的，即标准的四种授权模式已经满足不了你的需求的时候，才会考虑使用这个。
+    
      
     在XML配置中呢，你可以使用 "authorization-server" 这个标签元素来进行设置。
      
@@ -181,8 +165,30 @@
 
 ClientDetailsServiceConfigurer (AuthorizationServerConfigurer 的一个回调配置项) 能够使用内存或者JDBC来实现客户端详情服务（ClientDetailsService），Spring Security OAuth2的配置方法是编写@Configuration类继承AuthorizationServerConfigurerAdapter，然后重写void configure(ClientDetailsServiceConfigurer clients)方法，如：
 
+     
+    /*ClientDetailsService，有几个重要的属性如下列表：
+        clientId：（必须的）用来标识客户的Id。
+         secret：（需要值得信任的客户端）客户端安全码，如果有的话。
+         scope：用来限制客户端的访问范围，如果为空（默认）的话，那么客户端拥有全部的访问范围。
+         authorizedGrantTypes：此客户端可以使用的授权类型，默认为空。
+         authorities：此客户端可以使用的权限（基于Spring Security authorities）。*/
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+           /*clients.inMemory()                //使用in-memory存储：存在内存里面
+                    .withClient("normal-app")   //client_id 客户端ID 对应一个客户端
+                    .authorizedGrantTypes("authorization_code", "implicit") // 该client允许的授权类型
+                    .authorities("ROLE_CLIENT")
+                    .scopes("read","write")   // 允许的授权范围,读写
+                    .resourceIds(resourceId)
+                    .accessTokenValiditySeconds(accessTokenValiditySeconds)//授权码存活时间
+                    .and()
+                    .withClient("trusted-app")
+                    .authorizedGrantTypes("client_credentials", "password")
+                    .authorities("ROLE_TRUSTED_CLIENT")
+                    .scopes("read", "write")
+                    .resourceIds(resourceId)
+                    .accessTokenValiditySeconds(accessTokenValiditySeconds)
+                    .secret("secret");*/
         // 使用JdbcClientDetailsService客户端详情服务
         clients.withClientDetails(new JdbcClientDetailsService(dataSource));
     }
@@ -191,7 +197,8 @@ ClientDetailsServiceConfigurer (AuthorizationServerConfigurer 的一个回调配
 JwtAccessTokenConverter是用来生成token的转换器，而token令牌默认是有签名的，且资源服务器需要验证这个签名。此处的加密及验签包括两种方式：<br>
 对称加密、非对称加密（公钥密钥）<br>
 对称加密需要授权服务器和资源服务器存储同一key值，而非对称加密可使用密钥加密，暴露公钥给资源服务器验签，本文中使用非对称加密方式，配置于AuthorizationServerConfigurerAdapter如下：<br>
-
+     
+     /***/
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
