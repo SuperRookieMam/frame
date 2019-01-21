@@ -47,7 +47,7 @@ public class MySecurityConfig  extends WebSecurityConfigurerAdapter{
     }
 
     /**
-     * 比如说自定义的验证规则，注入倒此链条当中
+     * 设置自定义的service
      * */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
