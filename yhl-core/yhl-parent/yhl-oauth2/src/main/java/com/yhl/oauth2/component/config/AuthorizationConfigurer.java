@@ -1,19 +1,13 @@
 package com.yhl.oauth2.component.config;
 
 
+import com.yhl.oauth2.service.MyClientDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Persistable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-
-import javax.sql.DataSource;
 
 /**
  * auoth  用来配置授权（authorization）以及令牌（token）
@@ -22,9 +16,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationConfigurer extends AuthorizationServerConfigurerAdapter {
-   @Autowired
-   @Qualifier("datasource")
-   private DataSource dataSource;
+
+    @Autowired
+    private MyClientDetailService myClientDetailService;
 
 
        /**
@@ -51,8 +45,8 @@ public class AuthorizationConfigurer extends AuthorizationServerConfigurerAdapte
                     .accessTokenValiditySeconds(accessTokenValiditySeconds)//授权码存活时间;
                     .and()
                     */
-          // 使用JdbcClientDetailsService客户端详情服务
-          clients.withClientDetails(new JdbcClientDetailsService(dataSource));
+          // 通过自定义的service来存储客户端信息
+          clients.withClientDetails(myClientDetailService);
     }
     /**
      * AuthorizationServerEndpointsConfigurer:用来配置授权（authorization）以及令牌（token）
