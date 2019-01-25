@@ -1,10 +1,7 @@
 package com.yhl.baseorm.dao.Impl;
 
 
-import com.yhl.baseorm.component.constant.Condtion;
-import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.SelecteParam;
-import com.yhl.baseorm.component.constant.UpdateParam;
+import com.yhl.baseorm.component.constant.*;
 import com.yhl.baseorm.component.util.MyClassUtil;
 import com.yhl.baseorm.dao.JpaBaseDao;
 import org.springframework.data.domain.Page;
@@ -14,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -112,14 +111,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         if (selecteParam==null){
             return (List<T>)super.findAll();
         }
-        Specification condtion = new Condtion<T>(selecteParam);
-         Sort sort = selecteParam.getToSort();
-         List<T> list =null;
-            if (sort==null){
-                list =super.findAll(condtion);
-            }else {
-                list =super.findAll(condtion,sort);
-            }
+        List<T> list =MyQuery.getTypedQuery(clazz,entityManager,selecteParam).getResultList();
         return list;
     }
 
@@ -128,15 +120,13 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         if (selecteParam==null){
             return super.count();
         }
-        Specification condtion = new Condtion<T>(selecteParam);
-        return super.count(condtion);
+        TypedQuery query =MyQuery.getCountQuery(clazz,entityManager,selecteParam);
+        return MyQuery.executeCountQuery(query);
     }
 
     @Override
     public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam) {
-        Specification condtion = new Condtion<T>(selecteParam);
-        PageRequest pageRequest = new PageRequest(selecteParam.getPageNum() - 1, selecteParam.getPageSize(),selecteParam.getToSort());
-        Page page = findAll(condtion, pageRequest);
+        Page page = MyQuery.readPage(selecteParam,clazz,entityManager);
         PageInfo<T> pageInfo=new PageInfo<>();
         pageInfo.setPageNum(selecteParam.getPageNum());
         pageInfo.setPageSize(selecteParam.getPageSize());

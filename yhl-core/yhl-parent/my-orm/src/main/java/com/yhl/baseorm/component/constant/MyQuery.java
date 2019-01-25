@@ -2,13 +2,17 @@ package com.yhl.baseorm.component.constant;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,23 +23,84 @@ public class MyQuery {
 
 
 
-    public static <T> TypedQuery<T> getTypedQuery(Class<T> tClass, EntityManager entityManager){
+    public static <T> TypedQuery<T> getTypedQuery(Class<T> tClass, EntityManager entityManager,SelecteParam selecteParam){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(tClass);
+        Root<T> root =applySpecificationToCriteria(selecteParam,tClass,query,entityManager);
+        Sort sort = getToSort( selecteParam);
+        if (sort != null) {
+            query.orderBy(QueryUtils.toOrders(sort, root, builder));
+        }
+        return  entityManager.createQuery(query);
+    }
 
-        return  null;
+    public static <T> TypedQuery<Long> getCountQuery(Class<T> tClass, EntityManager entityManager,SelecteParam selecteParam) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root<T> root = applySpecificationToCriteria(selecteParam,tClass,query,entityManager);
+        if (query.isDistinct()) {
+            query.select(builder.countDistinct(root));
+        } else {
+            query.select(builder.count(root));
+        }
+        query.orderBy(Collections.emptyList());
+        return entityManager.createQuery(query);
+    }
+
+    public static <T> Page<T> readPage(SelecteParam selecteParam,Class<T> tClass,EntityManager entityManager) {
+        TypedQuery<T> query=getTypedQuery(tClass,entityManager,selecteParam);
+        Sort sort = getToSort(selecteParam);
+        PageRequest pageable =new PageRequest(selecteParam.getPageNum() - 1, selecteParam.getPageSize(),sort);
+        query.setFirstResult(pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+        long l=executeCountQuery(getCountQuery(tClass, entityManager, selecteParam));
+        return new PageImpl(query.getResultList(), pageable, l);
     }
 
 
-    private static <S,  T> Root<T> applySpecificationToCriteria(Specification<T> spec, Class<T> domainClass, CriteriaQuery<S> query,EntityManager entityManager) {
+
+    public static Long executeCountQuery(TypedQuery<Long> query) {
+        Assert.notNull(query, "TypedQuery must not be null!");
+        List<Long> totals = query.getResultList();
+        Long total = 0L;
+
+        Long element;
+        for(Iterator var3 = totals.iterator(); var3.hasNext(); total = total + (element == null ? 0L : element)) {
+            element = (Long)var3.next();
+        }
+
+        return total;
+    }
+
+
+
+    public static Sort getToSort(SelecteParam selecteParam){
+        JSONArray sort =selecteParam.getSort();
+        if (sort==null||sort.isEmpty()){
+            return null;
+        }else {
+            List<Sort.Order> list =new ArrayList<>();
+            for (int i = 0; i < sort.size(); i++) {
+                JSONObject jsonObject =sort.getJSONObject(i);
+                Sort.Direction direction=  "desc".equalsIgnoreCase(jsonObject.getString("order"))
+                        ?Sort.Direction.DESC
+                        :Sort.Direction.ASC;
+                list.add(new Sort.Order(direction,jsonObject.getString("name")));
+            }
+            return   new Sort(list);
+        }
+    }
+
+
+    private static <T>  Root<T> applySpecificationToCriteria(SelecteParam selecteParam, Class<T> domainClass, CriteriaQuery query,EntityManager entityManager) {
         Assert.notNull(domainClass, "实体必须不为空!");
         Assert.notNull(query, "CriteriaQuery 必须不为空!");
         Root<T> root = query.from(domainClass);
-        if (spec == null) {
+        if (selecteParam == null) {
             return root;
         } else {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            Predicate predicate = spec.toPredicate(root, query, builder);
+            Predicate predicate = toPredicate(root,builder,selecteParam);
             if (predicate != null) {
                 query.where(predicate);
             }
@@ -43,8 +108,8 @@ public class MyQuery {
         }
     }
 
-    public<T> Predicate toPredicate(Root<T> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = getPredicates(root,criteriaBuilder);
+    public static <T> Predicate toPredicate(Root<T> root, CriteriaBuilder criteriaBuilder,SelecteParam selecteParam) {
+        List<Predicate> predicates = getPredicates(root,criteriaBuilder,selecteParam);
         int m =predicates.size();
         if (m>0){
             return criteriaBuilder.and(predicates.toArray(new  Predicate[predicates.size()]));
@@ -55,7 +120,7 @@ public class MyQuery {
     /**
      * 获得过滤条件数组
      * */
-    public<T>  List<Predicate> getPredicates(Root<T> root, CriteriaBuilder criteriaBuilder){
+    private static<T>  List<Predicate> getPredicates(Root<T> root, CriteriaBuilder criteriaBuilder,SelecteParam selecteParam){
         List<Predicate> predicates = new ArrayList();
         JSONObject orObject = selecteParam.getOr();
         if (orObject!=null&&!orObject.isEmpty()){
@@ -79,7 +144,7 @@ public class MyQuery {
     /**
      *取得引用对象的值比如说field.field2.field3 的值
      * */
-    public static <T> Map<Path,Object> getPath(Root<T> root, JSONObject jsonObject){
+    private static <T> Map<Path,Object> getPath(Root<T> root, JSONObject jsonObject){
         Map<Path,Object> map =null;
         if (jsonObject!=null&&!jsonObject.isEmpty()){
             Iterator<String> iterator = jsonObject.keySet().iterator();
@@ -87,10 +152,37 @@ public class MyQuery {
             Path path=null;
             while (iterator.hasNext()){
                 String  key =iterator.next();
-                String[] keys=key.contains(".")?key.split("\\."):new String[]{key};
-                path = root.get(keys[0]);
-                for (int i = 1; i <keys.length ; i++) {
-                    path = path.get(keys[i]);
+                //此处是表关联数据，注意仅限一层关联，如user.address，
+                //查询user的address集合中，address的name为某个值
+                if (key.contains(".")) {
+                    String[] keys = StringUtils.split(key, ".");
+                    //获取该属性的类型，Set？List？Map？
+                    path = root.get(keys[0]);
+                    Class clazz = path.getJavaType();
+                    if (clazz.equals(Set.class)) {
+                        SetJoin setJoin = root.joinSet(keys[0]);
+                        for (int i = 1; i <keys.length ; i++) {
+                            path = i==1?setJoin.get(keys[i]):path.get(keys[i]);
+                        }
+                    } else if (clazz.equals(List.class)) {
+                        ListJoin listJoin = root.joinList(keys[0]);
+                        for (int i = 1; i <keys.length ; i++) {
+                            path = i==1?listJoin.get(keys[i]):path.get(keys[i]);
+                        }
+                    } else if (clazz.equals(Map.class)) {
+                        MapJoin mapJoin = root.joinMap(keys[0]);
+                        for (int i = 1; i <keys.length ; i++) {
+                            path = i==1?mapJoin.get(keys[i]):path.get(keys[i]);
+                        }
+                    } else {
+                        //是many to one时
+                        for (int i = 1; i <keys.length ; i++) {
+                            path = path.get(keys[i]);
+                        }
+                    }
+                } else {
+                    //单表查询
+                    path = root.get(key);
                 }
                 map.put(path,jsonObject.get(key));
             }
@@ -98,7 +190,7 @@ public class MyQuery {
         return map;
     }
 
-    public <T> Predicate[] getPredicateArray(Root<T> root, JSONObject jsonObject , CriteriaBuilder criteriaBuilder){
+    private static <T> Predicate[] getPredicateArray(Root<T> root, JSONObject jsonObject , CriteriaBuilder criteriaBuilder) {
         List<Predicate> list = new ArrayList<>();
         Iterator<String> iterator =jsonObject.keySet().iterator();
         while (iterator.hasNext()){
@@ -253,13 +345,30 @@ public class MyQuery {
                     list.add(predicate);
                 }
             }else  if("isMember".equalsIgnoreCase(key)){
+                while (iterator1.hasNext()){
+                    Map.Entry<Path,Object> entry = iterator1.next();
+                    //注意这个时值哈,且注意Path 的参数，is
+                     JSONArray jsonArray =(JSONArray)entry.getValue();
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        Predicate predicate= criteriaBuilder.isMember(jsonArray.get(i),entry.getKey());
+                        list.add(predicate);
+                    }
 
+                }
             }else if ("isNotMember".equalsIgnoreCase(key)){
+                while (iterator1.hasNext()){
+                    Map.Entry<Path,Object> entry = iterator1.next();
+                    //注意这个时值哈,且注意Path 的参数，is
+                    JSONArray jsonArray =(JSONArray)entry.getValue();
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        Predicate predicate= criteriaBuilder.isNotMember(jsonArray.get(i),entry.getKey());
+                        list.add(predicate);
+                    }
 
+                }
             }
         }
         return list.size()==0?null:list.toArray(new Predicate[list.size()]);
     }
-
 
 }
