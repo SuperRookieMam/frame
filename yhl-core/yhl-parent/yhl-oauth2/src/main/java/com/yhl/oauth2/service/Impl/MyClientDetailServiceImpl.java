@@ -1,4 +1,4 @@
-package com.yhl.oauth2.service.Impl;
+package com.yhl.oauth2.service.impl;
 
 import com.yhl.base.baseService.impl.BaseServiceImpl;
 import com.yhl.oauth2.entity.MyClientDetail;
@@ -14,4 +14,7 @@ public class MyClientDetailServiceImpl extends BaseServiceImpl<MyClientDetail,St
     public ClientDetails loadClientByClientId(String s) throws ClientRegistrationException {
         return null;
     }
+
+
+
 }
