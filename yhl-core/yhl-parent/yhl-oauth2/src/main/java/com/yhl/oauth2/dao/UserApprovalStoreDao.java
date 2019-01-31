@@ -1,10 +1,9 @@
 package com.yhl.oauth2.dao;
 
 import com.yhl.base.baseDao.BaseDao;
-import com.yhl.oauth2.entity.MyClinetScop;
+import com.yhl.oauth2.entity.UserApprovalStore;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MyClinetScopDao extends BaseDao<MyClinetScop,String> {
-
+public interface UserApprovalStoreDao  extends BaseDao<UserApprovalStore,String> {
 }

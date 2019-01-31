@@ -1,21 +1,17 @@
 package com.yhl.oauth2.entity;
 
-import com.sun.security.ntlm.Client;
 import com.yhl.base.baseEntity.BaseEntity;
 import org.springframework.data.domain.Persistable;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Set;
 
 /**
  * 自定义客户端信息
  * */
 @Entity
-@Table(name ="my_user_detail")
+@Table(name ="my_client_detail")
 public class MyClientDetail extends BaseEntity<String>implements Persistable<String>, Serializable {
 
     private static final long serialVersionUID = -6186893015772300645L;
@@ -30,6 +26,17 @@ public class MyClientDetail extends BaseEntity<String>implements Persistable<Str
     private String name;
 
     //读写权限
+    //@CollectionTable：给出关联表格信息。表格Employee_Phone的外键Employee指向
+    // entity对应表格的EmployeeId列。
+    //@Column 读取CollectionTable中的scope列信息
+    // @OrderColumn：以Priority为排序，
+    // 存放到集合（List）中。表格中的priority或是List的index，即0,1,2,...
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "scope")
+    //@OrderColumn(name="Priority")  要排序可以这样处理
+    @CollectionTable(name = "my_clinet_scop", joinColumns = {
+            @JoinColumn(name = "client_id")
+    })
     private Set<String> scope;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -92,17 +99,7 @@ public class MyClientDetail extends BaseEntity<String>implements Persistable<Str
     }
 
 
-    //@CollectionTable：给出关联表格信息。表格Employee_Phone的外键Employee指向
-    // entity对应表格的EmployeeId列。
-    //@Column 读取CollectionTable中的scope列信息
-    // @OrderColumn：以Priority为排序，
-    // 存放到集合（List）中。表格中的priority或是List的index，即0,1,2,...
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "scope")
-    //@OrderColumn(name="Priority")  要排序可以这样处理
-    @CollectionTable(name = "my_clinet_scop", joinColumns = {
-            @JoinColumn(name = "client_id")
-    })
+
     public Set<String> getScope() {
         return scope;
     }
