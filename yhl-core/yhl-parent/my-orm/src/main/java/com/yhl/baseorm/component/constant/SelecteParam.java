@@ -2,6 +2,7 @@ package com.yhl.baseorm.component.constant;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.aspectj.weaver.ast.And;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
@@ -38,7 +39,6 @@ public class SelecteParam  implements Serializable {
     private  JSONObject and;
 
     private JSONObject or;
-
 
     public Integer getPageNum() {
         return pageNum;

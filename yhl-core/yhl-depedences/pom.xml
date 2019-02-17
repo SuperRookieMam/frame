@@ -49,6 +49,14 @@
         <spring-data-jpa.version>1.5.15.RELEASE</spring-data-jpa.version>
         <log4j.version>2.11.1</log4j.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
 
         <dependencies>
