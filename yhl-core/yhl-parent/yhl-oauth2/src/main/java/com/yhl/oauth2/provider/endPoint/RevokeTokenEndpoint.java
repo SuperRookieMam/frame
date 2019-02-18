@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class RevokeTokenEndpoint {
+public class RevokeTokenEndpoint  {
 
     @Autowired
     private ConsumerTokenServices tokenService;

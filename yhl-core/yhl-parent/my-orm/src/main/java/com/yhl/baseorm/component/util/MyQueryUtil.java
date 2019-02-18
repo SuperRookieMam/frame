@@ -3,7 +3,6 @@ package com.yhl.baseorm.component.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yhl.baseorm.component.constant.ConnectCondition;
-import com.yhl.baseorm.component.constant.SelecteParam;
 import com.yhl.baseorm.component.constant.WhereCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,14 +22,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MyQueryUtil {
-
+    /**
+    * 获取构建好wherecondition条件的TypedQuery
+    * */
     public static <T> TypedQuery<T> getTypedQuery(Class<T> tClass, EntityManager entityManager, WhereCondition whereCondition){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(tClass);
-
-
         Root<T> root =applySpecificationToCriteria(whereCondition,tClass,query,entityManager);
-        Sort sort = getToSort( selecteParam);
+        Sort sort = getToSort( whereCondition);
         if (sort != null) {
             query.orderBy(QueryUtils.toOrders(sort, root, builder));
         }
@@ -44,23 +43,24 @@ public class MyQueryUtil {
                 return root;
             } else {
                 CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-                Predicate predicate = toPredicate(root,builder,selecteParam);
+                Predicate predicate = toPredicate(root,builder,whereCondition);
                 if (predicate != null) {
                     query.where(predicate);
                 }
                 return root;
             }
     }
-
+    /**
+     *获取wherecondition条件构建的 Predicate
+     * */
     public static <T> Predicate toPredicate(Root<T> root, CriteriaBuilder criteriaBuilder,WhereCondition whereCondition) {
-        List<Predicate> predicates = getPredicates(root,criteriaBuilder,selecteParam);
+        List<Predicate> predicates = getPredicates(root,criteriaBuilder,whereCondition);
         int m =predicates.size();
         if (m>0){
             return criteriaBuilder.and(predicates.toArray(new  Predicate[predicates.size()]));
         }
         return criteriaBuilder.conjunction();
     }
-
     /**
      * 获得过滤条件数组
      * */
@@ -69,26 +69,16 @@ public class MyQueryUtil {
         ConnectCondition and =whereCondition.getAnd();
         ConnectCondition or =whereCondition.getOr();
         if (!ObjectUtils.isEmpty(and)){
-
-        }
-        if (!ObjectUtils.isEmpty(or)){
-
-        }
-
-
-        if (orObject!=null&&!orObject.isEmpty()){
-            Predicate[] predicates1 = getPredicateArray(root,orObject,criteriaBuilder);
-            if (predicates1!=null){
-                Predicate predicate=  criteriaBuilder.or(predicates1);
-                predicates.add(predicate);
-            }
-
-        }
-        JSONObject andObject = selecteParam.getAnd();
-        if (andObject!=null&&!andObject.isEmpty()){
-            Predicate[] predicates1 = getPredicateArray(root,andObject,criteriaBuilder);
+            Predicate[] predicates1 = getPredicateArray(root,and,criteriaBuilder);
             if (predicates1!=null){
                 Predicate predicate=  criteriaBuilder.and(predicates1);
+                predicates.add(predicate);
+            }
+        }
+        if (!ObjectUtils.isEmpty(or)){
+            Predicate[] predicates1 = getPredicateArray(root,or,criteriaBuilder);
+            if (predicates1!=null){
+                Predicate predicate=  criteriaBuilder.or(predicates1);
                 predicates.add(predicate);
             }
         }
@@ -379,18 +369,13 @@ public class MyQueryUtil {
         }
         return map;
     }
-
-
-
-
-
-
-
-
-    public static <T> TypedQuery<Long> getCountQuery(Class<T> tClass, EntityManager entityManager,SelecteParam selecteParam) {
+    /**
+     *取构建好wherecondition条件的查询条数的TypedQuery
+     * */
+    public static <T> TypedQuery<Long> getCountQuery(Class<T> tClass, EntityManager entityManager,WhereCondition whereCondition) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
-        Root<T> root = applySpecificationToCriteria(selecteParam,tClass,query,entityManager);
+        Root<T> root = applySpecificationToCriteria(whereCondition,tClass,query,entityManager);
         if (query.isDistinct()) {
             query.select(builder.countDistinct(root));
         } else {
@@ -399,56 +384,79 @@ public class MyQueryUtil {
         query.orderBy(Collections.emptyList());
         return entityManager.createQuery(query);
     }
-
-
-
-
-
-    public static <T> Page<T> readPage(SelecteParam selecteParam, Class<T> tClass, EntityManager entityManager) {
-        TypedQuery<T> query=getTypedQuery(tClass,entityManager,selecteParam);
-        Sort sort = getToSort(selecteParam);
-        PageRequest pageable =new PageRequest(selecteParam.getPageNum() - 1, selecteParam.getPageSize(),sort);
+    /**
+     *分页查询
+     * */
+    public static <T> Page<T> readPage(WhereCondition whereCondition, Class<T> tClass, EntityManager entityManager) {
+        TypedQuery<T> query=getTypedQuery(tClass,entityManager,whereCondition);
+        Sort sort = getToSort(whereCondition);
+        PageRequest pageable =new PageRequest(whereCondition.getPageNum() - 1, whereCondition.getPageSize(),sort);
         query.setFirstResult(pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
-        long l=executeCountQuery(getCountQuery(tClass, entityManager, selecteParam));
+        long l=executeCountQuery(getCountQuery(tClass, entityManager, whereCondition));
         return new PageImpl(query.getResultList(), pageable, l);
     }
 
 
-
+    /**
+     * 执行查询条数
+     * */
     public static Long executeCountQuery(TypedQuery<Long> query) {
         Assert.notNull(query, "TypedQuery must not be null!");
         List<Long> totals = query.getResultList();
         Long total = 0L;
-
         Long element;
         for(Iterator var3 = totals.iterator(); var3.hasNext(); total = total + (element == null ? 0L : element)) {
             element = (Long)var3.next();
         }
-
         return total;
     }
 
 
-
-    public static Sort getToSort(SelecteParam selecteParam){
-        JSONArray sort =selecteParam.getSort();
+    /**
+     *获取排序
+     * */
+    public static Sort getToSort(WhereCondition whereCondition){
+        JSONArray sort =whereCondition.getSort();
         if (sort==null||sort.isEmpty()){
             return null;
         }else {
             List<Sort.Order> list =new ArrayList<>();
             for (int i = 0; i < sort.size(); i++) {
                 JSONObject jsonObject =sort.getJSONObject(i);
-                Sort.Direction direction=  "desc".equalsIgnoreCase(jsonObject.getString("order"))
+                Sort.Direction direction=  "desc".equalsIgnoreCase(jsonObject.getString("sortType"))
                         ?Sort.Direction.DESC
                         :Sort.Direction.ASC;
-                list.add(new Sort.Order(direction,jsonObject.getString("name")));
+                list.add(new Sort.Order(direction,jsonObject.getString("fieldName")));
             }
             return   new Sort(list);
         }
     }
 
-
-
+    /**
+     *根据实体
+     * */
+    public static <T> CriteriaQuery<T> getCriteriaQuery(Class<T> tClass, EntityManager entityManager){
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        return builder.createQuery(tClass);
+    }
+    /**
+     * 获取实体根路路径
+     * */
+    public static <T> Root<T>  getRoot(Class<T> tClass,  CriteriaQuery<T> query){
+        return query.from(tClass);
+    }
+    /**
+     * 获取实体CriteriaBuilder
+     * */
+    public static  CriteriaBuilder  getCriteriaQuery(EntityManager entityManager){
+        return entityManager.getCriteriaBuilder();
+    }
+    /**
+     * 根据你自定义的query 添加好条件后构建TypedQuery
+     * */
+    public static <T> TypedQuery<T> getTypedQuery(EntityManager entityManager,CriteriaQuery<T> query){
+          return  entityManager.createQuery(query);
+    }
 
 }

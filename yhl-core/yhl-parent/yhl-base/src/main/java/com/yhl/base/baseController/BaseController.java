@@ -3,9 +3,7 @@ package com.yhl.base.baseController;
 import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
-import com.yhl.baseorm.component.constant.FreeParam;
-import com.yhl.baseorm.component.constant.SelecteParam;
-import com.yhl.baseorm.component.constant.UpdateParam;
+import com.yhl.baseorm.component.constant.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +25,25 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     /**
      * 根据参数自定义查询
      * */
-    @GetMapping("/list")
+    @GetMapping(params = {"list"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public ResultDto findByParams(@RequestBody  SelecteParam selecteParam){
-        return  baseService.findByParams(selecteParam);
+    public ResultDto findByParams(@RequestBody WhereCondition whereCondition){
+        return  baseService.findByParams(whereCondition);
     }
 
     /**
      * 分页查询
      * */
-    @GetMapping("/page")
+    @GetMapping(params ={"page"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public ResultDto findPageByParams(@RequestBody SelecteParam selecteParam){
-        return  baseService.findPageByParams(selecteParam);
+    public ResultDto findPageByParams(@RequestBody WhereCondition whereCondition){
+        return  baseService.findPageByParams(whereCondition);
     }
 
 
-    @PostMapping
+    @PostMapping(params = {"insertEntity"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
     public<T> ResultDto insertByEntity(@RequestBody T entity){
@@ -55,7 +53,7 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
    /**
      * 批量插入
      * */
-    @PostMapping("/list")
+    @PostMapping(params = {"insertList"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
     public <T> ResultDto insertByList(@RequestBody List<T> entitys){
@@ -65,44 +63,44 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     /**
      * 根据实体跟新
      * */
-    @PutMapping
+    @PutMapping(params = {"update"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public<T> ResultDto updateByUpdateParam(@RequestBody UpdateParam updateParams){
-        return  baseService.updateByUpdateParam(updateParams);
+    public<T> ResultDto updateByUpdateFields(@RequestBody UpdateFields updateFields){
+        return  baseService.updateByUpdateFields(updateFields);
     }
 
     /**
      * 根据实体跟新
      * */
-    @PutMapping("/list")
+    @PutMapping(params = {"updateList"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public<T> ResultDto updateByUpdateParams(@RequestBody UpdateParam[] updateParams){
-        return  baseService.updateByUpdateParams(updateParams,1000);
+    public<T> ResultDto updateByUpdateParams(@RequestBody UpdateFields[] updateFieldss){
+        return  baseService.updateByUpdateFields(updateFieldss,1000);
     }
     /**
      * 根据实体跟新
      * */
-    @PostMapping("/from")
+    @PostMapping(params = {"updateWhere"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public<T> ResultDto updateByFree(@RequestBody FreeParam freeParam){
-        return  baseService.updateByselecteParam(freeParam.getUpdateParam(),freeParam.getSelecteParam(),1000);
+    public<T> ResultDto updateByFree(@RequestBody UpdateCondition updateCondition){
+        return  baseService.updateByWhereCondition(updateCondition.getUpdateFields(),updateCondition.getWhereCondition(),1000);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
     public<T> ResultDto deleteByEntity(@PathVariable  ID id){
 
       return   baseService.deleteById(id);
     }
-    @DeleteMapping("/from")
+    @DeleteMapping(params = {"deleteWhere"})
     @ResponseBody
     @ApiOperation(value="根据Id查询实体", notes="getEntityById")
-    public ResultDto deleteByParams(@RequestBody SelecteParam selecteParam){
-        return  baseService.deleteBySelectParam(selecteParam);
+    public ResultDto deleteByParams(@RequestBody WhereCondition whereCondition){
+        return  baseService.deleteByWhereCondition(whereCondition);
     }
 
 }

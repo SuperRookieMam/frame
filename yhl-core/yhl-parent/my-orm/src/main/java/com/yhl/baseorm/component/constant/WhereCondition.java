@@ -19,7 +19,7 @@ public class WhereCondition implements Serializable {
 
     private ConnectCondition or;
     //因为排序时有序的所以用arry来接收
-    private JSONArray sort; //排序对象[{'order': 'desc',name:'字段名'}]
+    private JSONArray sort; //排序对象[{'sortType': 'desc','fieldName':'fieldName'}]
 
 
     public  ConnectCondition and(){
@@ -36,7 +36,8 @@ public class WhereCondition implements Serializable {
         sort=sort==null?new JSONArray():sort;
         if ("desc".equalsIgnoreCase(sortType)||"asc".equalsIgnoreCase(sortType)){
             JSONObject jsonObject =new JSONObject();
-            jsonObject.put("fieldName",sortType);
+            jsonObject.put("fieldName",key);
+            jsonObject.put("sortType",sortType);
             sort.add(jsonObject);
         }
         return this;

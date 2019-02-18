@@ -5,8 +5,8 @@ import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.baseService.BaseService;
 import com.yhl.base.component.dto.ResultDto;
 import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.SelecteParam;
-import com.yhl.baseorm.component.constant.UpdateParam;
+import com.yhl.baseorm.component.constant.UpdateFields;
+import com.yhl.baseorm.component.constant.WhereCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,36 +38,36 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
 
     @Override
     @Transactional(value ="transactionManagerPrimary")
-    public <T> ResultDto updateByUpdateParam(UpdateParam updateParams) {
-        T entity = (T) baseDao.updateByUpdateParam(updateParams);
+    public <T> ResultDto updateByUpdateFields(UpdateFields updateFields) {
+        T entity = (T) baseDao.updateByUpdateFields(updateFields);
         return ResultDto.success(entity) ;
     }
     @Override
     @Transactional(value ="transactionManagerPrimary")
-    public <T> ResultDto updateByUpdateParams(UpdateParam[] updateParams,int flusSize) {
-        int number =  baseDao.updateByUpdateParams(updateParams,flusSize);
+    public <T> ResultDto updateByUpdateFields(UpdateFields[] updateFieldss,int flusSize) {
+        int number =  baseDao.updateByUpdateFields(updateFieldss,flusSize);
         return ResultDto.success(number) ;
     }
     @Override
     @Transactional(value ="transactionManagerPrimary")
-    public <T> ResultDto updateByselecteParam(UpdateParam updateParams, SelecteParam selecteParam, int flushSize){
-        int number =  baseDao.updateByselecteParam( updateParams,selecteParam, flushSize);
+    public <T> ResultDto updateByWhereCondition(UpdateFields updateFields, WhereCondition whereCondition, int flushSize){
+        int number =  baseDao.updateByWhereCondition( updateFields,whereCondition, flushSize);
         return ResultDto.success(number) ;
     }
     @Override
-    public <T> ResultDto  findByParams(SelecteParam selecteParam) {
-       List<T> list = baseDao.findByParams(selecteParam);
+    public <T> ResultDto  findByParams(WhereCondition whereCondition) {
+       List<T> list = baseDao.findByParams(whereCondition);
         return ResultDto.success(list);
     }
 
     @Override
-    public ResultDto findCountByParams(SelecteParam selecteParam) {
-        return ResultDto.success(baseDao.findCountByParams(selecteParam));
+    public ResultDto findCountByParams(WhereCondition whereCondition) {
+        return ResultDto.success(baseDao.findCountByWhereCondition(whereCondition));
     }
 
     @Override
-    public <T> ResultDto findPageByParams(SelecteParam selecteParam) {
-        PageInfo pageInfo=baseDao.findPageByParams(selecteParam);
+    public <T> ResultDto findPageByParams(WhereCondition whereCondition) {
+        PageInfo pageInfo=baseDao.findPageByParams(whereCondition);
         return ResultDto.success(pageInfo);
     }
 
@@ -80,7 +80,7 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
 
     @Override
     @Transactional(value ="transactionManagerPrimary")
-    public ResultDto deleteBySelectParam(SelecteParam selecteParam) {
-        return ResultDto.success(baseDao.deleteBySelectParam(selecteParam));
+    public ResultDto deleteByWhereCondition(WhereCondition selecteParam) {
+        return ResultDto.success(baseDao.deleteByWhereCondition(selecteParam));
     }
 }

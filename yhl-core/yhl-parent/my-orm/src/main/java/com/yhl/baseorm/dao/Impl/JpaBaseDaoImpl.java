@@ -3,6 +3,7 @@ package com.yhl.baseorm.dao.Impl;
 
 import com.yhl.baseorm.component.constant.*;
 import com.yhl.baseorm.component.util.MyClassUtil;
+import com.yhl.baseorm.component.util.MyQueryUtil;
 import com.yhl.baseorm.dao.JpaBaseDao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,9 +65,9 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * 单个跟新
      * */
     @Override
-    public <T> T updateByUpdateParam(UpdateParam updateParams) {
-      T entity =(T)  entityManager.find(clazz,updateParams.get("id"));
-        entity = UpdateParam.copyPropertis(entity,updateParams,entityManager);
+    public <T> T updateByUpdateFields(UpdateFields updateFields) {
+      T entity =(T)  entityManager.find(clazz,updateFields.get("id"));
+        entity = updateFields.copyPropertis(entity,updateFields,entityManager);
         return entityManager.merge(entity);
     }
 
@@ -74,29 +75,29 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * 批量跟新
      * */
     @Override
-    public <T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize) {
+    public <T> int updateByUpdateFields(UpdateFields[] updateFieldss,int flushSize) {
         Map<String, Field> map = MyClassUtil.getAllFields(clazz);
-        for (int i = 0; i < updateParams.length; i++) {
-            T entity =(T)  entityManager.find(clazz,updateParams[i].get("id"));
-            entity = UpdateParam.copyPropertis(entity,updateParams[i],entityManager,map);
+        for (int i = 0; i < updateFieldss.length; i++) {
+            T entity =(T)  entityManager.find(clazz,updateFieldss[i].get("id"));
+            entity = UpdateFields.copyPropertis(entity,updateFieldss[i],entityManager,map);
             entityManager.merge(entity);
             if (i%flushSize==0){
                 entityManager.flush();
                 entityManager.clear();
             }
         }
-        return updateParams.length;
+        return updateFieldss.length;
     }
     /**
      * 根据条件跟新某个字段，但不是联表跟新，
      * */
     @Override
-    public <T> int updateByselecteParam (UpdateParam updateParam,SelecteParam selecteParam,int flushSize) {
+    public <T> int updateByWhereCondition (UpdateFields updateFields,WhereCondition whereCondition,int flushSize) {
         Map<String, Field> map = MyClassUtil.getAllFields(clazz);
-        List<T> list =findByParams(selecteParam);
+        List<T> list =findByParams(whereCondition);
         for (int i = 0; i < list.size(); i++) {
             T entity = list.get(i);
-            entity = UpdateParam.copyPropertis(entity,updateParam,entityManager,map);
+            entity = updateFields.copyPropertis(entity,updateFields,entityManager,map);
             entityManager.merge(entity);
             if (i%flushSize==0){
                 entityManager.flush();
@@ -107,31 +108,31 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
 
     @Override
-    public <T> List<T> findByParams(SelecteParam selecteParam) {
-        if (selecteParam==null){
+    public <T> List<T> findByParams(WhereCondition whereCondition) {
+        if (whereCondition==null){
             return (List<T>)super.findAll();
         }
-        List<T> list =MyQuery.getTypedQuery(clazz,entityManager,selecteParam).getResultList();
+        List<T> list = MyQueryUtil.getTypedQuery(clazz,entityManager,whereCondition).getResultList();
         return list;
     }
 
     @Override
-    public long findCountByParams(SelecteParam selecteParam) {
-        if (selecteParam==null){
+    public long findCountByWhereCondition(WhereCondition whereCondition) {
+        if (whereCondition==null){
             return super.count();
         }
-        TypedQuery query =MyQuery.getCountQuery(clazz,entityManager,selecteParam);
-        return MyQuery.executeCountQuery(query);
+        TypedQuery query =MyQueryUtil.getCountQuery(clazz,entityManager,whereCondition);
+        return MyQueryUtil.executeCountQuery(query);
     }
 
     @Override
-    public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam) {
-        Page page = MyQuery.readPage(selecteParam,clazz,entityManager);
+    public <T> PageInfo<T> findPageByParams(WhereCondition whereCondition) {
+        Page page = MyQueryUtil.readPage(whereCondition,clazz,entityManager);
         PageInfo<T> pageInfo=new PageInfo<>();
-        pageInfo.setPageNum(selecteParam.getPageNum());
-        pageInfo.setPageSize(selecteParam.getPageSize());
-        pageInfo.setStartRow((selecteParam.getPageNum()-1)*selecteParam.getPageSize());
-        pageInfo.setEndRow((selecteParam.getPageNum()-1)*selecteParam.getPageSize()+selecteParam.getPageSize());
+        pageInfo.setPageNum(whereCondition.getPageNum());
+        pageInfo.setPageSize(whereCondition.getPageSize());
+        pageInfo.setStartRow((whereCondition.getPageNum()-1)*whereCondition.getPageSize());
+        pageInfo.setEndRow((whereCondition.getPageNum()-1)*whereCondition.getPageSize()+whereCondition.getPageSize());
         pageInfo.setPages((int) pageInfo.getTotal()/(pageInfo.getPageSize()==0?1:pageInfo.getPageSize()));
         pageInfo.setList(page.getContent());
         pageInfo.setTotal(page.getTotalElements());
@@ -154,9 +155,16 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         super.delete(id);
     }
     @Override
-    public int deleteBySelectParam(SelecteParam selecteParam) {
-        List<T> list = this.findByParams(selecteParam);
+    public int deleteByWhereCondition(WhereCondition whereCondition) {
+        List<T> list = this.findByParams(whereCondition);
         super.delete(list);
         return list.size();
+    }
+
+    public EntityManager getEntityManager(){
+        return  this.entityManager;
+    }
+    public Class getEntityClass(){
+        return  this.clazz;
     }
 }

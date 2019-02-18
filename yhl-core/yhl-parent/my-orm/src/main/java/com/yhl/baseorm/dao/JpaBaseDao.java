@@ -2,12 +2,13 @@ package com.yhl.baseorm.dao;
 
 
 import com.yhl.baseorm.component.constant.PageInfo;
-import com.yhl.baseorm.component.constant.SelecteParam;
-import com.yhl.baseorm.component.constant.UpdateParam;
+import com.yhl.baseorm.component.constant.UpdateFields;
+import com.yhl.baseorm.component.constant.WhereCondition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
      * */
     public <T> T findById(ID id);
 
-    public <T> int updateByselecteParam(UpdateParam updateParams, SelecteParam selecteParam, int flushSize);
+    public <T> int updateByWhereCondition (UpdateFields updateFields,WhereCondition whereCondition,int flushSize);
 
     /**
      * 根据参数自定义查询
      * */
-    public <T> List<T> findByParams(SelecteParam selecteParam);
+    public <T> List<T> findByParams(WhereCondition whereCondition);
 
     /**
      * 根据一个实体插入
@@ -41,28 +42,29 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
     /**
      * 根据实体跟新
      * */
-    public<T> T updateByUpdateParam(UpdateParam updateParams);
+    public <T> T updateByUpdateFields(UpdateFields updateFields);
 
 
     /**
      * 根据实体跟新
-     * @param  updateParams 要跟新的字段值
+     * @param  updateFieldss 要跟新的字段值
      * @param  flushSize 多少条刷新一次
      * */
-    public<T> int updateByUpdateParams(UpdateParam[] updateParams,int flushSize);
+    public <T> int updateByUpdateFields(UpdateFields[] updateFieldss,int flushSize);
     /**
      * 根据条件查询条数
      * */
-    public long findCountByParams(SelecteParam selecteParam);
+    public long findCountByWhereCondition(WhereCondition whereCondition);
 
 
-    public <T> PageInfo<T> findPageByParams(SelecteParam selecteParam);
+    public <T> PageInfo<T> findPageByParams(WhereCondition whereCondition);
 
 
     public void deleteById(ID id);
 
-    public int deleteBySelectParam(SelecteParam selecteParam);
-
+    public int deleteByWhereCondition(WhereCondition whereCondition) ;
+    public EntityManager getEntityManager();
+    public Class getEntityClass();
     /**
      * JpaRepository的接口
      * List<T> findAll();
