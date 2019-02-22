@@ -1,8 +1,8 @@
 package com.yhl.zuulresource.component.config;
 
 
-import access.RequestAuthoritiesAccessDecisionVoter;
-import access.RequestAuthoritiesFilterInvocationSecurityMetadataSource;
+import com.yhl.yhlsecuritycommon.access.RequestAuthoritiesAccessDecisionVoter;
+import com.yhl.yhlsecuritycommon.access.RequestAuthoritiesFilterInvocationSecurityMetadataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;

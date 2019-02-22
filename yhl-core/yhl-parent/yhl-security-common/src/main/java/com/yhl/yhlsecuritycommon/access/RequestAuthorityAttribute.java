@@ -1,4 +1,4 @@
-package access;
+package com.yhl.yhlsecuritycommon.access;
 
 import lombok.Getter;
 import lombok.Setter;
