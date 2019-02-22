@@ -21,6 +21,9 @@
         <module>yhl-test</module>
         <module>yhl-oauth2</module>
         <module>yhl-security</module>
+        <module>yhl-oauth-server</module>
+        <module>yhl-security-common</module>
+        <module>yhl-zuul-resource-server</module>
     </modules>
 
     <dependencies>
