@@ -1,4 +1,4 @@
-package com.yhl.yhlsecuritycommon.access;
+package com.yhl.yhlsecuritycommon.componet.access;
 
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;

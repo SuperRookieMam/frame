@@ -1,15 +1,19 @@
-package com.yhl.yhlsecuritycommon.access;
+package com.yhl.yhlsecuritycommon.componet.access;
 
-import com.yhl.yhlsecuritycommon.provider.RequestAuthoritiesService;
+import com.yhl.yhlsecuritycommon.componet.provider.RequestAuthoritiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import java.util.Collection;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
@@ -33,19 +37,38 @@ public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-
-        return null;
+        final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+        List<RequestAuthorityAttribute> allAttributes = requestAuthoritiesService.listAllAttributes();
+        return allAttributes.stream().filter(attribute -> match(request, attribute)).collect(Collectors.toList());
     }
-
+    private boolean match(HttpServletRequest request, RequestAuthorityAttribute attribute) {
+        return getRequestMatcher(attribute).matches(request);
+    }
+    private RequestMatcher getRequestMatcher(RequestAuthorityAttribute attribute) {
+        String pattern = attribute.getPattern();
+        HttpMethod method = attribute.getMethod();
+        RequestAuthorityAttribute.MatchType matchType = attribute.getMatchType();
+        RequestInfo requestInfo = new RequestInfo(pattern, method, matchType);
+        RequestMatcher matcher = requestMatchMap.get(requestInfo);
+        if (Objects.isNull(matcher)) {
+            if (RequestAuthorityAttribute.MatchType.ANT_PATH.equals(matchType)) {
+                matcher = new AntPathRequestMatcher(pattern, method.toString());
+            } else if (RequestAuthorityAttribute.MatchType.REGEXP.equals(matchType)) {
+                matcher = new RegexRequestMatcher(pattern, method.toString());
+            }
+            requestMatchMap.put(requestInfo, matcher);
+        }
+        return matcher;
+    }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        return null;
+        return  Collections.emptySet();
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return  FilterInvocation.class.isAssignableFrom(clazz);
     }
 }
 class RequestInfo {

@@ -1,6 +1,7 @@
-package com.yhl.yhlsecuritycommon.provider;
+package com.yhl.yhlsecuritycommon.componet.provider;
 
-import com.yhl.yhlsecuritycommon.access.RequestAuthorityAttribute;
+
+import com.yhl.yhlsecuritycommon.componet.access.RequestAuthorityAttribute;
 
 import java.util.List;
 
