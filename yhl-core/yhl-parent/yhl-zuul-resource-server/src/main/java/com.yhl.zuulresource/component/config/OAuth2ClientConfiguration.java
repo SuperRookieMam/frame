@@ -1,6 +1,7 @@
 package com.yhl.zuulresource.component.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yhl.zuulresource.component.client.token.grant.code.AddAuthorizationCodeAccessTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -73,7 +74,7 @@ public class OAuth2ClientConfiguration {
     public UserInfoRestTemplateCustomizer userInfoRestTemplateCustomizer() {
         AccessTokenProviderChain provicerChain = new AccessTokenProviderChain(Arrays.<AccessTokenProvider>asList(
                 // 更换原有的AuthorizationCodeAccessTokenProvider
-                //new AddAuthorizationCodeAccessTokenProvider(),
+                new AddAuthorizationCodeAccessTokenProvider(),
                 new ImplicitAccessTokenProvider(),
                 new ResourceOwnerPasswordAccessTokenProvider(),
                 new ClientCredentialsAccessTokenProvider()));
