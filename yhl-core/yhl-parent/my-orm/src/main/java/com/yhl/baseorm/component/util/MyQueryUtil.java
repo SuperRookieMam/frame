@@ -58,6 +58,7 @@ public class MyQueryUtil {
                  }
                  paths[i] = path;
              }
+             return  query.groupBy(paths);
          }
         return query;
     }
@@ -402,6 +403,12 @@ public class MyQueryUtil {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
         Root<T> root = applySpecificationToCriteria(whereCondition,tClass,query,entityManager);
+        //分组
+        JSONArray jsonArray =whereCondition.getGroupby();
+        if (jsonArray!=null){
+            String[] fieldNames =jsonArray.toArray(new String[jsonArray.size()]);
+            groupBy(query, root, fieldNames);
+        }
         if (query.isDistinct()) {
             query.select(builder.countDistinct(root));
         } else {
