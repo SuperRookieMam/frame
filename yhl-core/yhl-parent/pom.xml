@@ -24,6 +24,7 @@
         <module>yhl-oauth-server</module>
         <module>yhl-security-common</module>
         <module>yhl-zuul-resource-server</module>
+        <module>yhl-authority-common</module>
     </modules>
 
     <dependencies>
