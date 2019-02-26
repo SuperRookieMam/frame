@@ -29,11 +29,37 @@ public class MyQueryUtil {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(tClass);
         Root<T> root =applySpecificationToCriteria(whereCondition,tClass,query,entityManager);
+        //分组
+        JSONArray jsonArray =whereCondition.getGroupby();
+         if (jsonArray!=null){
+             String[] fieldNames =jsonArray.toArray(new String[jsonArray.size()]);
+             groupBy(query, root, fieldNames);
+         }
+        //排序
         Sort sort = getToSort( whereCondition);
         if (sort != null) {
             query.orderBy(QueryUtils.toOrders(sort, root, builder));
         }
         return  entityManager.createQuery(query);
+    }
+    private  static  CriteriaQuery groupBy(CriteriaQuery  query,Root root,String[] fieldNames){
+         if (fieldNames!=null){
+             Path[] paths =new  Path[fieldNames.length];
+             for (int i = 0; i < fieldNames.length ; i++) {
+                String fieldName =fieldNames[i];
+                String[] panthNames= fieldName.split("\\.");
+                 Path path=null;
+                 for (int j = 0; j < panthNames.length; j++) {
+                    if (j==0){
+                        path =root.get(panthNames[j]);
+                    }else {
+                        path =path.get(panthNames[j]);
+                    }
+                 }
+                 paths[i] = path;
+             }
+         }
+        return query;
     }
     private static <T>  Root<T> applySpecificationToCriteria(WhereCondition whereCondition, Class<T> domainClass, CriteriaQuery query,EntityManager entityManager) {
             Assert.notNull(domainClass, "实体必须不为空!");

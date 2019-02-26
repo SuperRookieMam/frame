@@ -3,6 +3,7 @@ package com.yhl.baseorm.component.constant;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -20,7 +21,8 @@ public class WhereCondition implements Serializable {
     private ConnectCondition or;
     //因为排序时有序的所以用arry来接收
     private JSONArray sort; //排序对象[{'sortType': 'desc','fieldName':'fieldName'}]
-
+    //按照顺序分组
+    private JSONArray groupby;// ['fieldName1','fieldName']
 
     public  ConnectCondition and(){
         and=and==null?new ConnectCondition():and;
@@ -39,6 +41,14 @@ public class WhereCondition implements Serializable {
             jsonObject.put("fieldName",key);
             jsonObject.put("sortType",sortType);
             sort.add(jsonObject);
+        }
+        return this;
+    }
+
+    public  WhereCondition addgroupby(String fieldName){
+        groupby=groupby==null?new JSONArray():groupby;
+        if (!StringUtils.isEmpty(fieldName)){
+            groupby.add(fieldName) ;
         }
         return this;
     }
