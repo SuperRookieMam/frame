@@ -9,18 +9,17 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "resource_scope")
-public class ResourceScope extends BaseEntity<String> {
+@Table(name = "menu_scop")
+public class MenuScop  extends BaseEntity<String> {
+    private static final long serialVersionUID = 7196044310348692291L;
 
     @ManyToOne
-    @JoinColumn(name = "resource")
-    private Resource resource;
+    @JoinColumn(name = "menu")
+    private Menu menu;
 
     @Column(name = "role")
     private String role;
 
-    @Embedded
-    private  ResourceOperation resourceOperation;
 
 
 }

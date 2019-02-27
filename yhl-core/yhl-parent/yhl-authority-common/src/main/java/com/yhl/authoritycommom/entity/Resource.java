@@ -33,17 +33,7 @@ public class Resource extends BaseEntity<String> {
     @Enumerated(EnumType.STRING)
     private RequestAuthorityAttribute.MatchType matchType = RequestAuthorityAttribute.MatchType.ANT_PATH;
 
-    /**
-     * 资源所属范围
-     */
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "scope_")
-    @CollectionTable(name = "resource_scope_", joinColumns = {
-            @JoinColumn(name = "resource")
-    })
-    private Set<String> scope;
-
-    /**
+     /**
      * 资源描述
      */
     @Column(name = "description_", length = 800)
