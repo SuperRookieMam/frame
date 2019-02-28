@@ -22,5 +22,7 @@ public class ResourceScope extends BaseEntity<String> {
     @Embedded
     private  ResourceOperation resourceOperation;
 
+    @Column(name = "organization_id")
+    private String organizationId;
 
 }

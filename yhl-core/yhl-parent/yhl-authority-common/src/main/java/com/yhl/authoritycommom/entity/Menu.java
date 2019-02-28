@@ -83,4 +83,7 @@ public class Menu extends BaseEntity<String> implements Serializable {
     @Enumerated(EnumType.STRING)
     private MenuType type = MenuType.COMPONENT;
 
+    @Column(name = "organization_id")
+    private String organizationId;
+
 }

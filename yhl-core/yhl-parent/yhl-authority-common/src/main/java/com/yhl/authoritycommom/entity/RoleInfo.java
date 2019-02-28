@@ -17,6 +17,7 @@ public class RoleInfo extends BaseEntity<String> {
     @Column(name = "roleName")
     private  String roleName;
 
-
+    @Column(name = "organization_id")
+    private String organizationId;
 
 }

@@ -20,6 +20,7 @@ public class MenuScop  extends BaseEntity<String> {
     @Column(name = "role")
     private String role;
 
-
+    @Column(name = "organization_id")
+    private String organizationId;
 
 }

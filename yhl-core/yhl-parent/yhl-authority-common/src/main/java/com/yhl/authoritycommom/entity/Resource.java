@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -39,4 +38,7 @@ public class Resource extends BaseEntity<String> {
     @Column(name = "description_", length = 800)
     private String description;
 
+
+    @Column(name = "organization_id")
+    private String organizationId;
 }

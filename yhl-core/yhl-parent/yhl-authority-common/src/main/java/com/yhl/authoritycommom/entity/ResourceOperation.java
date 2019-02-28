@@ -31,4 +31,7 @@ public class ResourceOperation extends BaseEntity<String> {
 
     @Column(name = "delete_able")
     private Boolean deleteable;
+
+    @Column(name = "organization_id")
+    private String organizationId;
 }
