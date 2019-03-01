@@ -29,7 +29,7 @@ public class Authority extends BaseEntity<String> {
     @JoinTable(name = "menu_scop",joinColumns = {
             @JoinColumn(name ="role_id",referencedColumnName = "role_info"),
             @JoinColumn(name ="department_id",referencedColumnName = "department")})
-    private List<Menu> menus;
+    private List<MenuScop> menuScops;
 
     //联级刷新，如果词表校色发生变化，对应的list 夜发生变化懒加载
     @OneToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
