@@ -31,4 +31,13 @@ public class UserInfo extends BaseEntity<String> {
     @ManyToOne
     @JoinColumn(name ="role_info")
     private  RoleInfo roleInfo;
+
+    @Column(name = "pid")
+    private String pid;
+
+    @ManyToOne
+    @Column(name = "department")
+    private Department department;
+
+
 }

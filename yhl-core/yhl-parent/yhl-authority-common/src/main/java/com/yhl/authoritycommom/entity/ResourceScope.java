@@ -16,8 +16,11 @@ public class ResourceScope extends BaseEntity<String> {
     @JoinColumn(name = "resource")
     private Resource resource;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "role_id")
+    private String roleId;
+
+    @Column(name = "department_id")
+    private String departmentId;
 
     @Embedded
     private  ResourceOperation resourceOperation;

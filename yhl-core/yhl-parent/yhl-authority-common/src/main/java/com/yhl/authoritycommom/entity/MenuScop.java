@@ -17,8 +17,11 @@ public class MenuScop  extends BaseEntity<String> {
     @JoinColumn(name = "menu")
     private Menu menu;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "role_id")
+    private String roleId;
+
+    @Column(name = "department_id")
+    private String departmentId;
 
     @Column(name = "organization_id")
     private String organizationId;

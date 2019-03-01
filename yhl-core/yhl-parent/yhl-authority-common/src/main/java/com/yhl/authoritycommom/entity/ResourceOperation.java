@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 
 /**
  * 除了这四个有没有别的使用情况，尤其是一个实体类要在多个不同的实体类中进行使用，
@@ -17,8 +16,6 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 public class ResourceOperation extends BaseEntity<String> {
-    @ManyToOne
-    private Resource resource;
 
     @Column(name = "read_able")
     private Boolean readable;

@@ -16,20 +16,26 @@ import java.util.List;
 @Setter
 public class Authority extends BaseEntity<String> {
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_info")
     private  RoleInfo roleInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "department")
+    private  Department department;
 
     //联级刷新，如果词表校色发生变化，对应的list 夜发生变化懒加载
     @OneToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
     @JoinTable(name = "menu_scop",joinColumns = {
-            @JoinColumn(name ="role",referencedColumnName = "role_info")})
+            @JoinColumn(name ="role_id",referencedColumnName = "role_info"),
+            @JoinColumn(name ="department_id",referencedColumnName = "department")})
     private List<Menu> menus;
 
     //联级刷新，如果词表校色发生变化，对应的list 夜发生变化懒加载
     @OneToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
     @JoinTable(name = "resource_scope",joinColumns = {
-            @JoinColumn(name ="role",referencedColumnName = "role_info")})
+            @JoinColumn(name ="role_id",referencedColumnName = "role_info"),
+            @JoinColumn(name ="department_id",referencedColumnName = "department")})
     private  List<ResourceScope> resourceScopes;
 
 
