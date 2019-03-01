@@ -25,14 +25,14 @@ public class Authority extends BaseEntity<String> {
     private  Department department;
 
     //联级刷新，如果词表校色发生变化，对应的list 夜发生变化懒加载
-    @OneToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
     @JoinTable(name = "menu_scop",joinColumns = {
             @JoinColumn(name ="role_id",referencedColumnName = "role_info"),
             @JoinColumn(name ="department_id",referencedColumnName = "department")})
     private List<MenuScop> menuScops;
 
     //联级刷新，如果词表校色发生变化，对应的list 夜发生变化懒加载
-    @OneToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH,fetch =FetchType.LAZY)
     @JoinTable(name = "resource_scope",joinColumns = {
             @JoinColumn(name ="role_id",referencedColumnName = "role_info"),
             @JoinColumn(name ="department_id",referencedColumnName = "department")})
