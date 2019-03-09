@@ -1,5 +1,7 @@
 package com.yhl.base.baseEntity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -28,6 +30,8 @@ import java.util.Date;
 /*@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "BaseEntity", discriminatorType = DiscriminatorType.STRING)
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")*/
+@Getter
+@Setter
 @MappedSuperclass
 public class BaseEntity<ID> implements Serializable {
 
@@ -35,7 +39,7 @@ public class BaseEntity<ID> implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "ID")
+    @Column(name = "id")
     private ID id;
 
 
