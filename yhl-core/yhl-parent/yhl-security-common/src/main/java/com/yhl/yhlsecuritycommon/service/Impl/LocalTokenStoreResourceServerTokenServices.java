@@ -1,5 +1,6 @@
 package com.yhl.yhlsecuritycommon.service.Impl;
 
+import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -11,6 +12,7 @@ import org.springframework.util.Assert;
 /**
  * 如果资源服务器和Oaut服务器在一个项目就用这个来获取Token
  * */
+@Setter
 public class LocalTokenStoreResourceServerTokenServices implements ResourceServerTokenServices, InitializingBean {
 
     private TokenStore tokenStore = null;

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class RequestAuthoritiesAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
     @Override
     public boolean supports(ConfigAttribute attribute) {
-         return attribute instanceof RequestAuthorityAttribute;
+        return attribute instanceof RequestAuthorityAttribute;
     }
 
     @Override
@@ -30,12 +30,13 @@ public class RequestAuthoritiesAccessDecisionVoter implements AccessDecisionVote
     }
     /**
      * 如何投票的
+     * 一票否决
      * */
     @Override
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
         // 如果没有找到相匹配的信息，弃权
         if (CollectionUtils.isEmpty(attributes)) {
-            return ACCESS_ABSTAIN;
+            return ACCESS_ABSTAIN;//0
         }
         List<RequestAuthorityAttribute> rAttributes = attributes.stream()
                 .map(attribute -> (RequestAuthorityAttribute) attribute)//authentication数组转为RequestAuthorityAttribute
