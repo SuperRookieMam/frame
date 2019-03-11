@@ -19,10 +19,10 @@ import java.util.List;
 @NoRepositoryBean
 public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,ID>, JpaSpecificationExecutor<T> {
 
-    /**
-     * 自定义接口
-     * */
-    public <T> T findById(ID id);
+//    /**
+//     * 自定义接口
+//     * */
+//    public <T> T findById(ID id);
 
     public <T> int updateByWhereCondition (UpdateFields updateFields,WhereCondition whereCondition,int flushSize);
 

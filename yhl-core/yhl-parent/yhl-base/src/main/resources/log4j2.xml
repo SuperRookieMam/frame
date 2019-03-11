@@ -2,7 +2,7 @@
 <Configuration status="WARN">
     <properties>
         <!--文件存储路径-->
-        <property name="LOG_HOME">D:/logs</property>
+        <property name="LOG_HOME">E:/logs</property>
         <!--文件名会加上日期等后缀-->
         <property name="FILE_NAME">mylog</property>
         <!--日志级别-->

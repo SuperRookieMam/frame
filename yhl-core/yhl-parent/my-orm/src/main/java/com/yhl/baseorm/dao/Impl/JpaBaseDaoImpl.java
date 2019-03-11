@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -30,13 +31,13 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         this.entityManager = entityManager;
         clazz =modelClass;
     }
-    /**
+ /*   *//**
      * 根据id查询
-     * */
+     * *//*
     @Override
     public <T> T findById(ID id) {
-        return (T) super.findOne(id);
-    }
+        return (T) entityManager.find(clazz,id);
+    }*/
     /**
      * 单个插入
      * */
@@ -59,7 +60,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
                 entityManager.clear();
             }
         }
-        return batchSize +1;
+        return entitys.size();
     }
     /**
      * 单个跟新
@@ -152,12 +153,15 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
      * */
     @Override
     public void deleteById(ID id) {
-        super.delete(id);
+        T entity =getOne(id);
+         if (!ObjectUtils.isEmpty(entity)){
+             entityManager.detach(entity);
+         }
     }
     @Override
     public int deleteByWhereCondition(WhereCondition whereCondition) {
         List<T> list = this.findByParams(whereCondition);
-        super.delete(list);
+        super.deleteAll(list);
         return list.size();
     }
 

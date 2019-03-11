@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 @ControllerAdvice
 public class ControllerItercept {
      Logger logger = LogManager.getLogger(MyConst.LOGGER_NAME);

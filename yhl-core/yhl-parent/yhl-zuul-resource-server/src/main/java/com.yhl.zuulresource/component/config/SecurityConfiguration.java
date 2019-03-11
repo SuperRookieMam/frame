@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2SsoPr
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerTokenServicesConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.lang.reflect.Field;
 
 /**
  * 这是作为客户端的SecurityConfiguration
@@ -68,22 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //filter.setAuthenticationFailureHandler();
         return filter;
     }
-    // 这个applica 获取的父类的，
-    private ApplicationContext getApplicationContext(){
-        try {
-            Field field = super.getClass().getDeclaredField("context");
-            if (field!=null){
-                field.setAccessible(true);
-                Object object  =field.get(this);
-                field.setAccessible(false);
-                return  (ApplicationContext)object;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return  null;
-    }
-
 
     /**
      * 看源码的意思时说，继承这个类，子类只用实现一个方法就可以完成 SecurityConfigurer 的默认配置

@@ -424,7 +424,7 @@ public class MyQueryUtil {
         TypedQuery<T> query=getTypedQuery(tClass,entityManager,whereCondition);
         Sort sort = getToSort(whereCondition);
         PageRequest pageable =new PageRequest(whereCondition.getPageNum() - 1, whereCondition.getPageSize(),sort);
-        query.setFirstResult(pageable.getOffset());
+        query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
         long l=executeCountQuery(getCountQuery(tClass, entityManager, whereCondition));
         return new PageImpl(query.getResultList(), pageable, l);

@@ -16,10 +16,5 @@
             <artifactId>yhl-base</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--swagger 加密码-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
     </dependencies>
 </project>
