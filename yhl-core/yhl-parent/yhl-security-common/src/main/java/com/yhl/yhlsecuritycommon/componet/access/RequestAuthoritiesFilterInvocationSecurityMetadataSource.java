@@ -14,11 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
+/*封装你想要给用户反回的安全元素*/
 public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     @Autowired
     private RequestAuthoritiesService requestAuthoritiesService;
+
     private Map<RequestInfo, RequestMatcher> requestMatchMap = new ConcurrentHashMap<RequestInfo, RequestMatcher>();
 
     public RequestAuthoritiesFilterInvocationSecurityMetadataSource() {
@@ -30,6 +31,7 @@ public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements
         this.requestAuthoritiesService = requestAuthoritiesService;
     }
 
+
     @Autowired
     public void setRequestAuthoritiesService(RequestAuthoritiesService requestAuthoritiesService) {
         this.requestAuthoritiesService = requestAuthoritiesService;
@@ -38,12 +40,15 @@ public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+        //比如说属性菜单
         List<RequestAuthorityAttribute> allAttributes = requestAuthoritiesService.listAllAttributes();
+        //过滤掉不合格的
         return allAttributes.stream().filter(attribute -> match(request, attribute)).collect(Collectors.toList());
     }
     private boolean match(HttpServletRequest request, RequestAuthorityAttribute attribute) {
         return getRequestMatcher(attribute).matches(request);
     }
+    //这个貌似可以根据逻辑需要自己实现
     private RequestMatcher getRequestMatcher(RequestAuthorityAttribute attribute) {
         String pattern = attribute.getPattern();
         HttpMethod method = attribute.getMethod();
@@ -60,7 +65,7 @@ public class RequestAuthoritiesFilterInvocationSecurityMetadataSource implements
         }
         return matcher;
     }
-
+    /*If available, returns all of the {@code ConfigAttribute}s defined by the implementing class.*/
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         return  Collections.emptySet();

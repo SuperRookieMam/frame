@@ -19,11 +19,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler, Initia
 	@Autowired(required = false)
 	private ObjectMapper objectMapper;
 
-	@Override
+	@Override//成功后吧正确的头肯反悔给用户
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 		Object principal = authentication.getPrincipal();
 		if (!Objects.isNull(principal)) {
+			// 这就是为什么需要json格式的token了,日过不是估计这里就会报错了
 			String result = objectMapper.writeValueAsString(principal);
 			response.setContentType("application/json;charset=UTF-8");
 			response.getWriter().write(result);
