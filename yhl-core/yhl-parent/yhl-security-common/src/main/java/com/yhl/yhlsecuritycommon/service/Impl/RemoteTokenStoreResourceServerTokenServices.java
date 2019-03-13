@@ -25,6 +25,7 @@ public class RemoteTokenStoreResourceServerTokenServices implements ResourceServ
 
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken) throws AuthenticationException, InvalidTokenException {
+
         return null;
     }
 

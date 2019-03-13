@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
 @Setter
 public class LocalTokenStoreResourceServerTokenServices implements ResourceServerTokenServices, InitializingBean {
 
-    private TokenStore tokenStore = null;
+    private TokenStore tokenStore ;
 
     public void setTokenStore(TokenStore tokenStore) {
         this.tokenStore = tokenStore;
@@ -28,12 +28,12 @@ public class LocalTokenStoreResourceServerTokenServices implements ResourceServe
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken) throws AuthenticationException, InvalidTokenException {
 
-
         return null;
     }
 
     @Override
     public OAuth2AccessToken readAccessToken(String accessToken) {
+
         return null;
     }
 }

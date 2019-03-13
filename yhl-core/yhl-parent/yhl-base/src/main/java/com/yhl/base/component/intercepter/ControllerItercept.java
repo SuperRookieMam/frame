@@ -19,6 +19,7 @@ public class ControllerItercept {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public ResultDto handlException(final HttpServletRequest request, final Exception e){
+        e.printStackTrace();
         logger.error(e.getMessage());
         return ResultDto.error(e);
     }
