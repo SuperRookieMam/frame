@@ -52,7 +52,7 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     @Override
     public <T> int insertByList(List<T> entitys) {
         //分批保存相对于速度要块很多
-        int batchSize = entitys.size() - 1;
+        int batchSize = entitys.size()>1?entitys.size():1;
         for (int i = 0; i < entitys.size(); i++) {
             entityManager.persist(entitys.get(i));
             if (i % batchSize == 0) {
