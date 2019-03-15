@@ -4,7 +4,6 @@ package com.yhl.zuulresource.component.config;
 import com.yhl.yhlsecuritycommon.componet.access.RequestAuthoritiesAccessDecisionVoter;
 import com.yhl.yhlsecuritycommon.componet.access.RequestAuthoritiesFilterInvocationSecurityMetadataSource;
 import com.yhl.yhlsecuritycommon.service.Impl.RemoteTokenStoreResourceServerTokenServices;
-import com.yhl.yhlsecuritycommon.service.Impl.SecurityTokenStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -94,17 +93,17 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter  {
      */
     public ResourceServerTokenServices tokenStoreResourceServerTokenServices() {
        RemoteTokenStoreResourceServerTokenServices tokenService = new RemoteTokenStoreResourceServerTokenServices();
-       tokenService.setTokenStore(tokenStore());
+       //tokenService.setTokenStore(tokenStore());
         return  tokenService;
     }
-    /**
+  /*  *//**
      * 其实这个就是一个Dao层
-     * */
+     * *//*
     @Bean
     public TokenStore tokenStore() {
         //自定义的一个tokenstore 实现自定义的token管理
         return  new SecurityTokenStore();
-    }
+    }*/
 
 
 }
