@@ -14,10 +14,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> implements BaseService<T, ID> {
-    
+
     @Autowired
     BaseDao<T,ID> baseDao;
-    
+
     @Override
     public <T> ResultDto findById(ID id) {
         T entity= (T) baseDao.findById(id);
@@ -42,6 +42,13 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         T entity = (T) baseDao.updateByUpdateFields(updateFields);
         return ResultDto.success(entity) ;
     }
+    @Override
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto updateByEntity(T entity) {
+        entity = baseDao.updateByEntity(entity);
+        return ResultDto.success(entity) ;
+    }
+
     @Override
     @Transactional(value ="transactionManagerPrimary")
     public <T> ResultDto updateByUpdateFields(UpdateFields[] updateFieldss,int flusSize) {

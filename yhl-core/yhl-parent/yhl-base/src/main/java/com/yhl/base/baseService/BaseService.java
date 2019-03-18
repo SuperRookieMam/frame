@@ -4,6 +4,7 @@ import com.yhl.base.baseEntity.BaseEntity;
 import com.yhl.base.component.dto.ResultDto;
 import com.yhl.baseorm.component.constant.UpdateFields;
 import com.yhl.baseorm.component.constant.WhereCondition;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +29,10 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * 根据实体跟新
      * */
     public<T> ResultDto updateByUpdateFields(UpdateFields updateFields);
+
+    @Transactional(value ="transactionManagerPrimary")
+    <T2> ResultDto updateByEntity(T2 entity);
+
     /**
      * 根据实体跟新
      * */

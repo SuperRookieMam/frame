@@ -73,6 +73,15 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
     }
 
     /**
+     * 注意这entity 必须时游览状态的要不肯能跟新不聊
+     * 因为好向以前试过
+     * */
+    @Override
+    public <T> T updateByEntity(T entity) {
+        return entityManager.merge(entity);
+    }
+
+    /**
      * 批量跟新
      * */
     @Override
