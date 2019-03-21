@@ -39,7 +39,8 @@ public class BaseEntity<ID> implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id")
+    @Column(name = "id",length = 50)
+    //@GeneratedValue(strategy=GenerationType.IDENTITY)
     private ID id;
 
 
