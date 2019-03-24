@@ -81,6 +81,14 @@ public class JpaBaseDaoImpl<T,ID extends Serializable> extends SimpleJpaReposito
         return entityManager.merge(entity);
     }
 
+    @Override
+    public <T> T[] updateByEntitys(T[] entitys) {
+        for (int i = 0; i <entitys.length; i++) {
+            entityManager.merge(entitys[i]);
+        }
+        return entitys;
+    }
+
     /**
      * 批量跟新
      * */

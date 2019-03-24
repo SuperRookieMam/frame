@@ -4,7 +4,6 @@ package com.yhl.zuulresource.component.config;
 import com.yhl.yhlsecuritycommon.componet.access.RequestAuthoritiesAccessDecisionVoter;
 import com.yhl.yhlsecuritycommon.componet.access.RequestAuthoritiesFilterInvocationSecurityMetadataSource;
 import com.yhl.yhlsecuritycommon.service.Impl.RemoteTokenStoreResourceServerTokenServices;
-import com.yhl.yhlsecuritycommon.service.Impl.SecurityTokenStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -94,7 +92,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter  {
      */
     public ResourceServerTokenServices tokenStoreResourceServerTokenServices() {
        RemoteTokenStoreResourceServerTokenServices tokenService = new RemoteTokenStoreResourceServerTokenServices();
-       tokenService.setTokenStore(tokenStore());
+      // tokenService.setTokenStore(tokenStore());
         return  tokenService;
     }
   /*  *//**

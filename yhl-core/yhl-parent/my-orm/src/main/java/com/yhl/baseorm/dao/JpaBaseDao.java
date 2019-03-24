@@ -47,6 +47,7 @@ public interface JpaBaseDao<T,ID extends Serializable>  extends JpaRepository<T,
 
     <T> T updateByEntity(T entity);
 
+    <T> T[] updateByEntitys(T[] entity);
     /**
      * 根据实体跟新
      * @param  updateFieldss 要跟新的字段值

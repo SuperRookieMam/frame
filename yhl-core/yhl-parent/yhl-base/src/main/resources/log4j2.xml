@@ -6,7 +6,7 @@
         <!--文件名会加上日期等后缀-->
         <property name="FILE_NAME">mylog</property>
         <!--日志级别-->
-        <property name="cur_Level">info</property>
+        <property name="cur_Level">debug</property>
     </properties>
 
     <!--Appenders：输出源，用于定义日志输出的地方 -->
@@ -51,7 +51,7 @@
                 每个logger可以指定一个level（TRACE, DEBUG, INFO, WARN, ERROR, ALL or OFF），
                 不指定时level默认为ERROR-->
     <Loggers>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingRandomAccessFile" />
         </Root>

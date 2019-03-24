@@ -48,7 +48,12 @@ public class BaseServiceImpl<T extends BaseEntity<ID>,ID extends Serializable> i
         entity = baseDao.updateByEntity(entity);
         return ResultDto.success(entity) ;
     }
-
+    @Override
+    @Transactional(value ="transactionManagerPrimary")
+    public <T> ResultDto updateByEntitys(T[] entitys) {
+        baseDao.updateByEntity(entitys);
+        return ResultDto.success(entitys) ;
+    }
     @Override
     @Transactional(value ="transactionManagerPrimary")
     public <T> ResultDto updateByUpdateFields(UpdateFields[] updateFieldss,int flusSize) {

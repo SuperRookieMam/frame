@@ -21,10 +21,6 @@ public class BaseDaoFactory <T, ID extends Serializable>  extends JpaRepositoryF
     @Override
     public  JpaRepositoryImplementation<?, ?> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
         //判断接口是不是继承自己的baseDao 如果是返回Basedao的实现,如果不是按照源码进行下去
-        System.out.println("<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
-        System.out.println(information.getRepositoryInterface());
-        System.out.println(information.getRepositoryInterface());
-        System.out.println("<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
         if (JpaBaseDao.class.isAssignableFrom(information.getRepositoryInterface())){
             return new JpaBaseDaoImpl<>(information.getDomainType(),entityManager);
         }
@@ -35,10 +31,6 @@ public class BaseDaoFactory <T, ID extends Serializable>  extends JpaRepositoryF
     }
     @Override
     protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-        System.out.println("<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
-        System.out.println(metadata.getRepositoryInterface());
-        System.out.println(metadata.getRepositoryInterface());
-        System.out.println("<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
         if (JpaBaseDao.class.isAssignableFrom(metadata.getRepositoryInterface())){
             return JpaBaseDao.class;
         }

@@ -30,9 +30,9 @@ public interface BaseService<T extends BaseEntity<ID>,ID extends Serializable> {
      * */
     public<T> ResultDto updateByUpdateFields(UpdateFields updateFields);
 
-    @Transactional(value ="transactionManagerPrimary")
-    <T2> ResultDto updateByEntity(T2 entity);
+    <T> ResultDto updateByEntity(T entity);
 
+    <T> ResultDto updateByEntitys(T[] entity);
     /**
      * 根据实体跟新
      * */
