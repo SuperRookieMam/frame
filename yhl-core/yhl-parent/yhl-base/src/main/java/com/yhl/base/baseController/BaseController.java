@@ -116,10 +116,10 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
 
       return   baseService.deleteById(id);
     }
-    @DeleteMapping("where")
+    @PostMapping("where")
     @ResponseBody
     @ApiOperation(value="根据Where条件批量删除实体", notes="deleteByParams")
-    public ResultDto deleteByParams(@RequestBody WhereCondition whereCondition){
+    public ResultDto deleteByParams(@RequestParam WhereCondition whereCondition){
         return  baseService.deleteByWhereCondition(whereCondition);
     }
 
