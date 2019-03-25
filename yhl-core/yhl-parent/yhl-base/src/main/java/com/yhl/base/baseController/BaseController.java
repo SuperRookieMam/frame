@@ -74,7 +74,7 @@ public class BaseController<T extends BaseEntity<ID>,ID extends Serializable>{
     /**
      * 根据实体跟新
      * */
-    @PutMapping
+    @PutMapping("list")
     @ResponseBody
     @ApiOperation(value="根据传入的实体数组跟新", notes="updateByEntitys")
     public<T> ResultDto updateByEntitys(@RequestBody T[] entitys){
