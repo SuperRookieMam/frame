@@ -25,6 +25,8 @@
         <module>yhl-security-common</module>
         <module>yhl-zuul-resource-server</module>
         <module>yhl-authority-common</module>
+        <module>hadoop-hdfs</module>
+        <module>mapreduce</module>
     </modules>
 
     <dependencies>

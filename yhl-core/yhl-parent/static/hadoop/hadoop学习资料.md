@@ -33,5 +33,15 @@ Hadoop运行整个计算机集群代码。这个过程包括以下核心任务�
 2. 创建用户：hadoop
     *  useradd -m hadoop -s /bin/bash # 创建新用户hadoop //此命令创建了一个用户hadoop，其中-d和-m选项用来为登录名sam产生一个主目录/bin/bash
     *  passwd hadoop  //修改hadoop shell 登陆密码
+    *  创建无密码登陆
+        * cd ~/.ssh/       # 若没有该目录，请先执行一次ssh localhost
+        * ssh-keygen -t rsa     # 会有提示，都按回车就可以
+        * cat id_rsa.pub >> authorized_keys  # 加入授权
+        * chmod 600 ./authorized_keys    # 修改文件权限
+        * $ scp ~/.ssh/id_rsa.pub hadoop@Slave1:/home/hadoop/ 
+          //scp 是 secure copy 的简写，用于在 Linux 下进行远程拷贝文件，类似于 cp 命令，不过 cp 只能在本机中拷贝。
+          执行 scp 时会要求输入 Slave1 上 hadoop 用户的密码(hadoop)，输入完成后会提示传输完毕：
     *  cd  /etc/sudoers 
     *  tar -zxf hadoop3.1.1 -C /usr/local  解压倒local下面取
+    
+    

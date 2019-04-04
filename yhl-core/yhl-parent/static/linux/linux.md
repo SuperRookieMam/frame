@@ -13,3 +13,6 @@
     yum install lrzsz -y    rz  sz指令可以实现linux和windows之间的文件传输，但要求在windows客户端要安装Xshell或SecureCRT远程连接工具。
     rz  文件上传 //前提时要装上面那个
     nmtui net-tools 下面的命令配置IP
+    netstat -nltp | grep(查找) 
+    ssh server "ssh命令"
+    

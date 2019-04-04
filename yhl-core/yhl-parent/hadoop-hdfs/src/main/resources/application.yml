@@ -1,0 +1,4 @@
+spring:
+  hadoop:
+    fsshell:
+      enabled: true #开启fsshell支持
